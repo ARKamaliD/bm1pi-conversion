@@ -11,7 +11,7 @@ unsigned __int128 to_bm1pi(__int128 real, __int128 imag) {
     unsigned __int128 result = 0;
     unsigned __int128 mask = (unsigned __int128) 1;
 
-    for (int i = 0; i < 128 && (real || imag); ++i) {
+    for (int i = 0; i < 128 && (real || imag); ++i, mask <<= 1) {
         __int128 temp = real; //secure the current value of real
         if ((real % 2 && imag % 2) || (!(real % 2) && !(imag % 2))) {
             // (imag - real) and (-temp - imag) are both even -> no remainder -> don't change result
@@ -23,8 +23,9 @@ unsigned __int128 to_bm1pi(__int128 real, __int128 imag) {
             imag = (-temp - imag + 1) / 2;
             result |= mask;
         }
-        mask <<= 1;
     }
 
     return result;
 }
+
+// TODO: alternative implementations of to_carthesian and to_bm1pi for performance comparison
