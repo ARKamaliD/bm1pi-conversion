@@ -9,8 +9,9 @@ void print_uint128_binary(unsigned __int128 num, bool leading_zeros) {
         return;
     }
 
-    for (int i = 127; i >= 0; i--) {
-        unsigned __int128 mask = ((unsigned __int128) 1) << i;
+    unsigned __int128 mask = (unsigned __int128) 1 << 127;
+
+    for (int i = 0; i < 128; i++, mask >>= 1) {
         if (num & mask) {
             leading_zeros = 1;
             printf("1");
@@ -23,7 +24,7 @@ void print_uint128_binary(unsigned __int128 num, bool leading_zeros) {
 
 
 int main() {
-    print_uint128_binary(to_bm1pi(0, 0), false);
+    print_uint128_binary(to_bm1pi(3, 2), false);
 
     return 0;
 }
