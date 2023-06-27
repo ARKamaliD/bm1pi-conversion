@@ -13,7 +13,7 @@ void to_carthesian(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
     unsigned __int128 sumReal = 0;
     unsigned __int128 sumImag = 0;
     
-    unsigned __int128 mask = (unsigned __int128) 1;
+    unsigned __int128 mask = 1;
 
     size_t counter = 0;
 
