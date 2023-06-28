@@ -17,37 +17,111 @@
 \maketitle
 
 \section{Einleitung}
-Die Arithmetik ist eine fundamentale Disziplin der Mathematik, die sich mit den Grundoperationen wie Addition, Subtraktion, Multiplikation und Division befasst. Normalerweise sind wir es gewohnt, diese Operationen in unserem alltäglichen Leben in einem dezimalen Zahlensystem durchzuführen, bei dem die Basis 10 beträgt.\\
-
-Darüber hinaus die Basen 2 und 16 sind Zahlensysteme, die in der Informatik und Mathematik häufig verwendet werden. Jedes Zahlensystem basiert auf einer bestimmten Anzahl von Symbolen, die verwendet werden, um Zahlen darzustellen. Hier ist eine Erklärung, wofür wir die Basen 2 und 16 im Allgemeinen brauchen:\\
-
+\subsection{Überblick}
+Die Arithmetik ist eine fundamentale Disziplin der Mathematik, die sich mit den Grundoperationen wie Addition, Subtraktion, Multiplikation und Division befasst. Normalerweise sind wir es gewohnt, diese Operationen in unserem alltäglichen Leben in einem dezimalen Zahlensystem durchzuführen, bei dem die Basis 10 beträgt.
+\newline
+Darüber hinaus die Basen 2 und 16 sind Zahlensysteme, die in der Informatik und Mathematik häufig verwendet werden. Jedes Zahlensystem basiert auf einer bestimmten Anzahl von Symbolen, die verwendet werden, um Zahlen darzustellen. Hier ist eine Erklärung, wofür wir die Basen 2 und 16 im Allgemeinen brauchen:
+\newline
+\newline
 Basis 2 (Binärsystem):
-Das Binärsystem verwendet nur zwei Symbole, normalerweise 0 und 1. Es ist das grundlegendste Zahlensystem in der digitalen Welt, da Computerinformationen auf zwei Zuständen basieren: ausgeschaltet (0) und eingeschaltet (1).\\
-
+Das Binärsystem verwendet nur zwei Symbole, normalerweise 0 und 1. Es ist das grundlegendste Zahlensystem in der digitalen Welt, da Computerinformationen auf zwei Zuständen basieren: ausgeschaltet (0) und eingeschaltet (1).
+\newline
+\newline
 Basis 16 (Hexadezimalsystem):
-Das Hexadezimalsystem verwendet 16 Symbole: die Zahlen 0-9 und die Buchstaben A-F. Es bietet eine kompaktere Darstellung großer Binärzahlen und erleichtert die Lesbarkeit und Handhabung von Zahlen in der Informatik.\\
- 
- Es gibt eine allgemeine Formel,die eine Allgemiene Repräsentation von Zahlen in anderen Zahlensystemen in Dezimalschreibweise darstellt. Die Formel lautet:
+Das Hexadezimalsystem verwendet 16 Symbole: die Zahlen 0-9 und die Buchstaben A-F. Es bietet eine kompaktere Darstellung großer Binärzahlen und erleichtert die Lesbarkeit und Handhabung von Zahlen in der Informatik.
+\newline
+\par
+Es gibt eine allgemeine Formel,die eine Allgemiene Repräsentation von Zahlen in anderen Zahlensystemen in Dezimalschreibweise darstellt. Die Formel lautet:
 
 $$A = \sum_{i=0} ^{n-1} a_i * g^i$$
 
-In dieser Formel steht A für die resultierende Zahl im Dezimalsystem, n für die Anzahl der Stellen unserer Zahl, g für die Basis und $a_i$ für die i-te Ziffer der ursprünglichen Zahl.\\
+In dieser Formel steht A für die resultierende Zahl im Dezimalsystem, n für die Anzahl der Stellen unserer Zahl, g für die Basis und $a_i$ für die i-te Ziffer der ursprünglichen Zahl.
+\newline
 
 Um ein besseres Verständnis zu bekommen gehen wir jetzt eine Beispiel ein. wir betrachten uns die Zahl "101011"\space in Binärsystem und mit der oben gennanten Formel wollen wir diese Zahl in Dezimalsystem umwandeln: 
 
 \[1* 2^0 + 1*2^1 + 0* 2^2 + 1* 2^3 + 0* 2^4 + 1* 2^5 = 1+2+8+32 = 43 \]
+\newpage
+\subsection{Die Aufgabe}
 
+Unsere Aufgabe besteht aus zwei Teilen, einem theoretischen und einem praktischen Teil.
 
+\subsubsection{Theoretischer Teil:}
+In diesem Teil der Ausarbeitung untersuchen wir die Konversion von komplexen Zahlen zur Basis $(-1 + i)$ und entwickeln die entsprechenden Algorithmen. Zunächst erklären wir, warum die Zahl $(3 + 2i)$ zur Basis $(-1 + i)$ die Darstellung $1001$ hat. Darauf aufbauend leiten wir die Algorithmen zur Konversion in beide Richtungen ab. Wir ziehen bei Bedarf geeignete Literaturquellen zurate, um unsere Argumentation zu unterstützen. Des Weiteren zeigen wir, dass komplexe Zahlen $(a + bi)$ mit den Werten $a \in \{1, 0, -1\}$ und $b \in \{1, 0, -1\}$ zur Basis $(-1 + i)$ mit binären Koeffizienten dargestellt werden können.
+
+\subsubsection{Praktischer Teil:}
+Im praktischen Teil der Ausarbeitung implementieren wir zwei Funktionen in unserem C-Code. Die erste Funktion, \texttt{to\_carthesian}, nimmt eine vom Benutzer spezifizierte Zahl (bm1pi) entgegen, die Bits enthält, die eine Zahl in der Darstellung zur Basis $(-1 + i)$ repräsentieren. Die Funktion wandelt diese Zahl in ihre kartesische Darstellung um und liefert den Realteil \texttt{real} und den Imaginärteil \texttt{imag}. Die zweite Funktion, \texttt{to\_bm1pi}, erhält eine komplexe Zahl in kartesischer Darstellung mit Realteil \texttt{real} und Imaginärteil \texttt{imag} und gibt einen Integer zurück, dessen Bits die Ziffern der Eingabezahl zur Basis $(-1 + i)$ darstellen.
 
 \section{Lösungsansatz}
+
+\subsection{Theoretischer Teil:}
+
+
+\newpage
+\subsection{Praktischer Teil:}
+\subsubsection{Variante 1 (wiederholte Divisionen mit Rest)}
+Generell gilt, dass wenn eine Basis und eine Zahl gegeben sind, die in dieser Basis erweitert werden soll, die Zahl wiederholt durch die Basis geteilt wird und die Reste notiert werden. In Bezug auf die Basis $-1+i$ wissen wir, dass der Rest bei der Erweiterung einer Gaußschen Zahl entweder 0 oder 1 ist.
+\newline
+Nehmen wir eine Zahl $n + im$ und teilen sie durch die gewählte Basis:
+
+\[\frac{{n + im}}{{-1 + i}} = \frac{{(n + im)(-1 - i)}}{2} = \frac{{m - n}}{2} - i\frac{{n + m}}{2}\]
+
+Wenn sowohl n als auch m gerade oder beide ungerade sind, dann sind sowohl $m-n$ als auch $m+n$ gerade. Das Ergebnis der Division ist eine Zahl und der Rest ist 0.
+
+Diese Formulierung berücksichtigt, dass der Zähler und der Nenner mit $-1-i$  (dem konjugierten Komplexen der Basis) multipliziert wurden und dass der Rest 0 ist.
+
+\[\frac{{m - n}}{{2}} - i\frac{{n + m}}{2}\]
+
+Wenn nur eines von n oder m gerade ist (das andere ungerade), kann man die folgende Version des Quotienten betrachten:
+
+\[\frac{{n + im}}{{-1 + i}} = \frac{{m - n + 1}}{2} - i \frac{{n + m -1}}{2} - \frac{{1}}{2}(1 + i)\]
+
+In diesem Fall ist das Ergebnis der Division die folgende Gaußsche Zahl:
+
+\[\frac{{m - n + 1}}{{2}} - i\frac{{n + m - 1}}{2}\]
+
+und der Rest ist 1. Tatsächlich gilt:
+
+\[(-1 +i) (\frac{m - n + 1}{2} - i \frac{n + m - 1}{2}) = n +im - 1\]
+Man kann diese Vorgehensweise mit den resultierenden Zahlen wiederholen, bis die ursprüngliche Zahl aufgrund der wiederholten Divisionen durch 2 verschwindet und die Sequenz der Reste erhalten bleibt...
+\newline
+
+Lassen Sie uns den Algorithmus anhand der angegebenen Zahl $3 + 2i$ veranschaulichen:
+
+Wenn
+\[(m - n) - i(n+m)=(2-3) - i(2 + 3) = -1 - 5i\] 
+
+(siehe das zweite Spaltenpaar in der folgenden Tabelle) durch 2 teilbar wäre, würden sich die Werte im dritten Spaltenpaar unverändert wiederholen und der Rest wäre null (siehe Spalte "REMAINDER"). Da $3 + 2 i$ jedoch nicht durch zwei teilbar ist, erfolgt eine Modifikation gemäß der Formel :
+\[(m - n + 1) - i(n + m - 1)= 0 - 4  i\] 
+und der Rest ist 1. Das erste Spaltenpaar zeigt auf das Ergebnis der ersten Division. (Die Division durch 2 wird jetzt durchgeführt.) Anschließend wird der oben beschriebene Schritt wiederholt, bis der entsprechende Wert im dritten Spaltenpaar zu $0 + i0$ geworden ist.
+\\
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{|c|c|cc|cc|c|}
+\hline
+              &               & \multicolumn{2}{c|}{\textbf{(DIVISION BY -1+i) * 2}} & \multicolumn{2}{c|}{\textbf{MODIFIED}}             &                    \\ \hline
+\textbf{REAL} & \textbf{IMAG} & \multicolumn{1}{c|}{\textbf{REAL}}  & \textbf{IMAG}  & \multicolumn{1}{c|}{\textbf{REAL}} & \textbf{IMAG} & \textbf{REMAINDER} \\ \hline
+3             & 2             & \multicolumn{1}{c|}{-1}             & -5             & \multicolumn{1}{c|}{0}             & -4            & 1                  \\ \hline
+0             & -2            & \multicolumn{1}{c|}{-2}             & 2              & \multicolumn{1}{c|}{-2}            & 2             & 0                  \\ \hline
+-1            & 1             & \multicolumn{1}{c|}{2}              & 0              & \multicolumn{1}{c|}{2}             & 0             & 0                  \\ \hline
+1             & 0             & \multicolumn{1}{c|}{-1}             & -1             & \multicolumn{1}{c|}{0}             & 0             & 1                  \\ \hline
+\end{tabular}
+\end{table}
+
+Endlich haben wir es geschafft! 
+\[(3 + 2i)_{10} = (1001)_{-1+i}\]
+
+
+
+
+
+
+
 
 
 % TODO: Je nach Aufgabenstellung einen der Begriffe wählen
 \section{Korrektheit/Genauigkeit}
-
-
-\section{Performanzanalyse}
-
 
 \section{Zusammenfassung und Ausblick}
 
