@@ -122,9 +122,8 @@ int main(int argc, char **argv) {
         // String is a single number
         bm1pi = (unsigned __int128) strtoull(p_arg, NULL, 2);
         to_carthesian(bm1pi, &real, &imag);
-        printf("%lld%s%lldi\n", (long long) real, (imag < 0 ? "" : "+"), (long long) imag);
+        printf("%lld%c%lldi\n", (long long) real, (imag < 0 ? '\0' : '+'), (long long) imag);
     } else {
-        // String contains a comma, treat it as "real,imag"
         // String contains a comma, treat it as "real,imag"
         char *realStr = malloc((commaPos - p_arg + 1) * sizeof(char));
         if (!realStr) malloc_failed();
