@@ -7,55 +7,58 @@ void to_carthesian(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
     unsigned __int128 baseReal = -1;
     unsigned __int128 baseImag = 1;
 
-    unsigned __int128 powZero= 0;
+    unsigned __int128 powZero = 0;
     unsigned __int128 powOne = 0;
 
     unsigned __int128 sumReal = 0;
     unsigned __int128 sumImag = 0;
-    
+
     unsigned __int128 mask = 1;
 
     size_t counter = 0;
 
     while (bm1pi > 0) {
-        unsigned __int128 firstBit = bm1pi % 10; //Store the first bit of the right to control whether it's 0 or 1
-        
-        if (firstBit & mask) {
+//        unsigned __int128 firstBit = bm1pi % 10; //Store the first bit of the right to control whether it's 0 or 1
+
+//        if (firstBit & mask) {
+        if (bm1pi & mask) {
             if (counter == 0) { //(-1 + i) ^ 0 = 1
-                
-                powZero++; 
+
+                powZero++;
 
             } else if (counter == 1) { //(-1 + i) ^ 1 = -1 + i
-                
+
                 powZero--;
                 powOne++;
 
             } else {
-                
-                for (size_t i = 0; i < counter - 1; i++) { //(-1 + i) ^ counter, (a + ib)(c + id) = ((ac - bd) + i(ad + bc) )
-    
-                unsigned __int128 temp = baseReal; //Secure the current value of real
 
-                baseReal = (-baseReal ) - baseImag;
-                baseImag = temp - baseImag;
+                for (size_t i = 0;
+                     i < counter - 1; i++) { //(-1 + i) ^ counter, (a + ib)(c + id) = ((ac - bd) + i(ad + bc) )
+
+                    unsigned __int128 temp = baseReal; //Secure the current value of real
+
+                    baseReal = (-baseReal) - baseImag;
+                    baseImag = temp - baseImag;
 
                 }
 
                 sumReal += baseReal; //Sum of real part
                 sumImag += baseImag; //Sum of imaginary part
-                
+
                 baseReal = -1;  //Reset to default base
                 baseImag = 1;   //Reset to default base
-                    
+
             }
         }
 
         counter++;
-        bm1pi /= 10; //Shift to right in base 10
-        
+//        bm1pi /= 10; //Shift to right in base 10
+        bm1pi >>= 1;
+
     }
 
-    *real = sumReal + powZero; 
+    *real = sumReal + powZero;
     *imag = sumImag + powOne;
 }
 
