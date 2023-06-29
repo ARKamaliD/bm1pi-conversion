@@ -78,6 +78,7 @@ int main(int argc, char **argv) {
     size_t repetitions = 0;
 
     int opt;
+    // TODO: figure out collision of '-' option and -number,number positional argument
     while ((opt = getopt(argc, argv, "V:B:h-:")) != -1) {
         switch (opt) {
             case 'V':
