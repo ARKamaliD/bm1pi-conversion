@@ -53,7 +53,7 @@ void print_uint128_binary(unsigned __int128 num, bool leading_zeros) {
 }
 
 void malloc_failed() {
-    printf("Malloc failed. Exiting.\n");
+    fprintf(stderr, "Malloc failed. Exiting.\n");
     exit(EXIT_FAILURE);
 }
 
@@ -78,9 +78,23 @@ int main(int argc, char **argv) {
     size_t repetitions = 0;
 
     int opt;
-    // TODO: figure out collision of '-' option and -number,number positional argument
-    while ((opt = getopt(argc, argv, "V:B:h-:")) != -1) {
+    bool neg_num_flag = 0;
+    while ((opt = getopt(argc, argv, "V:B:h-:1234567890")) != -1 && !neg_num_flag) {
         switch (opt) {
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                //positional argument with negative number encountered,decrement "optind" to the last value, skip options by setting "neg_num_flag" and parse the positional argument
+                optind--;
+                neg_num_flag = 1;
+                break;
             case 'V':
                 version = atol(optarg);
                 break;
@@ -95,6 +109,7 @@ int main(int argc, char **argv) {
                     print_help(program_name);
                     return EXIT_SUCCESS;
                 } else {
+                    fprintf(stderr, "%s: invalid option -- '-%s'\n", program_name, optarg);
                     print_usage(program_name);
                     return EXIT_FAILURE;
                 }
@@ -110,10 +125,23 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
+    if (optind < argc - 1) {
+        printf("%s: only one positional argument -- 'number' or 'real,imaginary' is expected\n", program_name);
+        print_usage(program_name);
+        return EXIT_FAILURE;
+    }
+
     //interpretation of the positional argument(s)
     const char *p_arg = argv[optind];
     char *commaPos = strchr(p_arg, ',');
     bool is_bm1pi = (commaPos == NULL);
+    // TODO: discuss if this is needed or too restrictive. (unary negation can also be interpreted)
+    if (is_bm1pi && neg_num_flag) {
+        fprintf(stderr, "Wrong Format, a number in basis (-1+i) consists only of '1' and '0'. Exiting.\n");
+        print_usage(program_name);
+        return EXIT_FAILURE;
+    }
+
 
     unsigned __int128 bm1pi;
     __int128 real = 0;
@@ -121,7 +149,13 @@ int main(int argc, char **argv) {
 
     if (is_bm1pi) {
         // String is a single number
-        bm1pi = (unsigned __int128) strtoull(p_arg, NULL, 2);
+        char *endptr = NULL;
+        bm1pi = (unsigned __int128) strtoull(p_arg, &endptr, 2);
+        if (endptr < p_arg + strlen(p_arg)) {
+            fprintf(stderr, "Wrong Format, a number in basis (-1+i) consists only of '1' and '0'. Exiting.\n");
+            print_usage(program_name);
+            return EXIT_FAILURE;
+        }
         to_carthesian(bm1pi, &real, &imag);
         printf("%lld%c%lldi\n", (long long) real, (imag < 0 ? '\0' : '+'), (long long) imag);
     } else {
@@ -135,8 +169,15 @@ int main(int argc, char **argv) {
         if (!imagStr) malloc_failed();
         strcpy(imagStr, commaPos + 1);
 
-        real = (__int128) strtoll(realStr, NULL, 10);
-        imag = (__int128) strtoll(imagStr, NULL, 10);
+        char *endptr_real = NULL, *endptr_imag = NULL;
+        real = (__int128) strtoll(realStr, &endptr_real, 10);
+        imag = (__int128) strtoll(imagStr, &endptr_imag, 10);
+        if ((endptr_real < realStr + strlen(realStr)) || (endptr_imag < imagStr + strlen(imagStr))) {
+            fprintf(stderr, "Wrong Number Format. Exiting.\n");
+            print_usage(program_name);
+            return EXIT_FAILURE;
+        }
+
         bm1pi = to_bm1pi(real, imag);
         print_uint128_binary(bm1pi, false);
 
