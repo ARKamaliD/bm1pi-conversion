@@ -77,24 +77,27 @@ int main(int argc, char **argv) {
     size_t version = 0;
     size_t repetitions = 0;
 
+    //it could be that a positional argument with a negative number is in argv
+    //before getopt_long takes it as an option because of the starting '-' check if it seems to have the correct format -number...
+    //if so set it as positional argument, remove it from argv and skip setting it later by checking if p_arg is not NULL
+    //else it's an invalid option don't touch it
+    const char *p_arg = NULL;
+    for (int i = 0; i < argc; ++i) {
+        if (strlen(argv[i]) > 1 && argv[i][0] == '-' && argv[i][1] >= '0' && argv[i][1] <= '9') {
+            p_arg = argv[i];
+            argv[i] = "";
+            break;
+        }
+    }
+
     int opt;
-    bool neg_num_flag = 0;
-    while ((opt = getopt(argc, argv, "V:B:h-:1234567890")) != -1 && !neg_num_flag) {
+    struct option long_options[] = {
+            {"help", no_argument, 0, 'h'},
+            {0, 0,                0, 0}
+    };
+
+    while ((opt = getopt_long(argc, argv, "V:B:h", long_options, NULL)) != -1) {
         switch (opt) {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                //positional argument with negative number encountered,decrement "optind" to the last value, skip options by setting "neg_num_flag" and parse the positional argument
-                optind--;
-                neg_num_flag = 1;
-                break;
             case 'V':
                 version = atol(optarg);
                 break;
@@ -104,15 +107,6 @@ int main(int argc, char **argv) {
             case 'h':
                 print_help(program_name);
                 return EXIT_SUCCESS;
-            case '-':
-                if (!strcmp(optarg, "help")) {
-                    print_help(program_name);
-                    return EXIT_SUCCESS;
-                } else {
-                    fprintf(stderr, "%s: invalid option -- '-%s'\n", program_name, optarg);
-                    print_usage(program_name);
-                    return EXIT_FAILURE;
-                }
             default:
                 print_usage(program_name);
                 return EXIT_FAILURE;
@@ -131,16 +125,10 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    //interpretation of the positional argument(s)
-    const char *p_arg = argv[optind];
-    char *commaPos = strchr(p_arg, ',');
-    bool is_bm1pi = (commaPos == NULL);
-    // TODO: discuss if this is needed or too restrictive. (unary negation can also be interpreted)
-    if (is_bm1pi && neg_num_flag) {
-        fprintf(stderr, "Wrong Format, a number in basis (-1+i) consists only of '1' and '0'. Exiting.\n");
-        print_usage(program_name);
-        return EXIT_FAILURE;
-    }
+    //parsing the positional argument, set it if not already set
+    if (p_arg == NULL) p_arg = argv[optind];
+    char *comma_pos = strchr(p_arg, ',');
+    bool is_bm1pi = (comma_pos == NULL);
 
 
     unsigned __int128 bm1pi;
@@ -149,6 +137,14 @@ int main(int argc, char **argv) {
 
     if (is_bm1pi) {
         // String is a single number
+
+        // TODO: discuss if this is needed or too restrictive. (unary negation can also be interpreted)
+        if (p_arg[0] == '-') {
+            fprintf(stderr, "Wrong Format, a number in basis (-1+i) is unsigned. Exiting.\n");
+            print_usage(program_name);
+            return EXIT_FAILURE;
+        }
+
         char *endptr = NULL;
         bm1pi = (unsigned __int128) strtoull(p_arg, &endptr, 2);
         if (endptr < p_arg + strlen(p_arg)) {
@@ -160,14 +156,14 @@ int main(int argc, char **argv) {
         printf("%lld%c%lldi\n", (long long) real, (imag < 0 ? '\0' : '+'), (long long) imag);
     } else {
         // String contains a comma, treat it as "real,imag"
-        char *realStr = malloc((commaPos - p_arg + 1) * sizeof(char));
+        char *realStr = malloc((comma_pos - p_arg + 1) * sizeof(char));
         if (!realStr) malloc_failed();
-        strncpy(realStr, p_arg, commaPos - p_arg);
-        realStr[commaPos - p_arg] = '\0';
+        strncpy(realStr, p_arg, comma_pos - p_arg);
+        realStr[comma_pos - p_arg] = '\0';
 
-        char *imagStr = malloc((strlen(commaPos)) * sizeof(char));
+        char *imagStr = malloc((strlen(comma_pos)) * sizeof(char));
         if (!imagStr) malloc_failed();
-        strcpy(imagStr, commaPos + 1);
+        strcpy(imagStr, comma_pos + 1);
 
         char *endptr_real = NULL, *endptr_imag = NULL;
         real = (__int128) strtoll(realStr, &endptr_real, 10);
