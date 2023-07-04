@@ -1,6 +1,6 @@
 % Diese Zeile bitte -nicht- aendern.
 \documentclass[course=erap]{aspdoc}
-
+\usepackage{enumitem}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TODO: Ersetzen Sie in den folgenden Zeilen die entsprechenden -Texte-
 %% mit den richtigen Werten.
@@ -14,6 +14,7 @@
 \title{Gruppe \theGroup{} -- Abgabe zu Aufgabe \theNumber}
 
 \begin{document}
+
 \maketitle
 
 \section{Einleitung}
@@ -33,7 +34,11 @@ Das Hexadezimalsystem verwendet 16 Symbole: die Zahlen 0-9 und die Buchstaben A-
 \par
 Es gibt eine allgemeine Formel,die eine Allgemiene Repräsentation von Zahlen in anderen Zahlensystemen in Dezimalschreibweise darstellt. Die Formel lautet:
 
-$$A = \sum_{i=0} ^{n-1} a_i * g^i$$
+\begin{equation}
+\label{sumFormel}
+    A = \sum_{i=0} ^{n-1} a_i * g^i
+\end{equation}
+
 
 In dieser Formel steht A für die resultierende Zahl im Dezimalsystem, n für die Anzahl der Stellen unserer Zahl, g für die Basis und $a_i$ für die i-te Ziffer der ursprünglichen Zahl.
 \newline
@@ -47,7 +52,7 @@ Um ein besseres Verständnis zu bekommen gehen wir jetzt eine Beispiel ein. wir 
 Unsere Aufgabe besteht aus zwei Teilen, einem theoretischen und einem praktischen Teil.
 
 \subsubsection{Theoretischer Teil:}
-In diesem Teil der Ausarbeitung untersuchen wir die Konversion von komplexen Zahlen zur Basis $(-1 + i)$ und entwickeln die entsprechenden Algorithmen. Zunächst erklären wir, warum die Zahl $(3 + 2i)$ zur Basis $(-1 + i)$ die Darstellung $1001$ hat. Darauf aufbauend leiten wir die Algorithmen zur Konversion in beide Richtungen ab. Wir ziehen bei Bedarf geeignete Literaturquellen zurate, um unsere Argumentation zu unterstützen. Des Weiteren zeigen wir, dass komplexe Zahlen $(a + bi)$ mit den Werten $a \in \{1, 0, -1\}$ und $b \in \{1, 0, -1\}$ zur Basis $(-1 + i)$ mit binären Koeffizienten dargestellt werden können.
+In diesem Teil der Ausarbeitung untersuchen wir die Konversion von komplexen Zahlen zur Basis $(-1 + i)$ und entwickeln die entsprechenden Algorithmen. Zunächst erklären wir, warum die Zahl $(3 + 2i)$ zur Basis $(-1 + i)$ die Darstellung $1001$ hat. Darauf aufbauend leiten wir die Algorithmen zur Konversion in beide Richtungen ab. Wir ziehen bei Bedarf geeignete Literaturquellen zu Rate, um unsere Argumentation zu unterstützen. Des Weiteren zeigen wir, dass komplexe Zahlen $(a + bi)$ mit den Werten $a \in \{1, 0, -1\}$ und $b \in \{1, 0, -1\}$ zur Basis $(-1 + i)$ mit binären Koeffizienten dargestellt werden können.
 
 \subsubsection{Praktischer Teil:}
 Im praktischen Teil der Ausarbeitung implementieren wir zwei Funktionen in unserem C-Code. Die erste Funktion, \texttt{to\_carthesian}, nimmt eine vom Benutzer spezifizierte Zahl (bm1pi) entgegen, die Bits enthält, die eine Zahl in der Darstellung zur Basis $(-1 + i)$ repräsentieren. Die Funktion wandelt diese Zahl in ihre kartesische Darstellung um und liefert den Realteil \texttt{real} und den Imaginärteil \texttt{imag}. Die zweite Funktion, \texttt{to\_bm1pi}, erhält eine komplexe Zahl in kartesischer Darstellung mit Realteil \texttt{real} und Imaginärteil \texttt{imag} und gibt einen Integer zurück, dessen Bits die Ziffern der Eingabezahl zur Basis $(-1 + i)$ darstellen.
@@ -55,12 +60,9 @@ Im praktischen Teil der Ausarbeitung implementieren wir zwei Funktionen in unser
 \section{Lösungsansatz}
 
 \subsection{Theoretischer Teil:}
-
-
-\newpage
-\subsection{Praktischer Teil:}
-\subsubsection{Variante 1 (wiederholte Divisionen mit Rest)}
+{Variante 1 (wiederholte Divisionen mit Rest)}
 Generell gilt, dass wenn eine Basis und eine Zahl gegeben sind, die in dieser Basis erweitert werden soll, die Zahl wiederholt durch die Basis geteilt wird und die Reste notiert werden. In Bezug auf die Basis $-1+i$ wissen wir, dass der Rest bei der Erweiterung einer Gaußschen Zahl entweder 0 oder 1 ist.
+\newline
 \newline
 Nehmen wir eine Zahl $n + im$ und teilen sie durch die gewählte Basis:
 
@@ -109,14 +111,65 @@ und der Rest ist 1. Das erste Spaltenpaar zeigt auf das Ergebnis der ersten Divi
 \end{tabular}
 \end{table}
 
-Endlich haben wir es geschafft! 
+Endlich haben wir es geschafft! Jetzt brauchen wir nur die Restspalte (Remainder) einfach von unten nach oben nacheinander verfassen und erhalten wir am Ende unsere Zahl in der Basis $(-1+i)$.
 \[(3 + 2i)_{10} = (1001)_{-1+i}\]
+\newline
+Um die Korrektheit unseres Ergebnis zu überprüfen, können wir die oben gennanten Formel(\ref{sumFormel}) zum Einsatz bringen, um unsere Zahl in Basis $(-1+i)$ wieder in Basis 10 zu wechseln:
+\begin{equation*}
+    \begin{split}
+        (1001)_{-1+i} &= 1*(-1+i)^0 + 0*(-1+i)^1 + 0*(-1+i)^2 +1*(-1+i)^3 \\
+        &=1 + 0 + 0 + (2 + 2i) \\
+        &= (3+2i)_{10}
+    \end{split}   
+\end{equation*}
 
+Für den zweiten Teil können wir nochmal die Formel (\ref{sumFormel}) in Gebrauch nehmen, um es zu beweisen, dass die angeforderten Komplexe Zahlen zur Basis $(-1+i)$ mit binären Koeffizienten darstellbar sind.
 
+\begin{enumerate}[label=\roman*) Falls]
+  \item a = -1, b = -1:
+  \[ -1 - i  = (-2i) + (-1+i) + 0 = 1*(-1+i)^2 + 1*(-1+i)^1 + 0*(-1+i)^0 =  (110)_{-1+i}\]
+  
+  \item  a = -1, b = 0:
+  \begin{equation*}
+      \begin{split}
+           -1 + 0i  &= (-4) + (2+2i) + (-2i) + 0 + 1 \\
+           &= 1*(-1+i)^4 + 1*(-1+i)^3 + 1*(-1+i)^2 + 0*(-1+i)^1 + 1*(-1+i)^0 \\ 
+           &=  (11101)_{-1+i} 
+      \end{split}
+  \end{equation*}
 
+  
+  \item a = -1, b = 1:
+  \[ -1 + i = (-1+i) + 0 = 1*(-1+i)^1 + 0*(-1+i)^0 =  (10)_{-1+i}\]
 
+  \item a = 0, b = -1:
+  \[ 0 + (-i)  = (-2i) + (-1+i) + 1 = 1*(-1+i)^2 + 1*(-1+i)^1 + 1*(-1+i)^0 =  (111)_{-1+i}\]
 
+  \item a = 0, b = 0:
+  \[ 0 + 0i  = 0 = 0*(-1+i)^0 =  (0)_{-1+i}\]
 
+  \item a = 0, b = 1:
+   \[ 0 + i = (-1+i) + 1 = 1*(-1+i)^1 + 1*(-1+i)^0 =  (11)_{-1+i}\]
+
+   \item a = 1, b = -1:
+   \begin{equation*}
+       \begin{split}
+            1 - i &=(4 -4i) + (-4) + (2+2i) + 0 + (-1+i) + 0 \\
+            &= 1*(-1+i)^5 + 1*(-1+i)^4 + 1*(-1+i)^3 + 0*(-1+i)^2 + 1*(-1+i)^1 + 0*(-1+i)^0 \\
+            &= (111010)_{-1+i}
+       \end{split}
+   \end{equation*}
+
+   \item a = 1, b = 0:
+    \[ 1 + 0i  = 1 = 1*(-1+i)^0 =  (1)_{-1+i}\]
+
+    \item a = 1, b = 1:
+   \[ 1 + i  = (2+2i) + (-2i) + (-1+i) + 0 = 1*(-1+i)^3 + 1*(-1+i)^2 + 1*(-1+i)^1 + 0*(-1+i)^0 =  (1110)_{-1+i}\]
+\end{enumerate}
+
+\newpage
+\subsection{Praktischer Teil:}
+\subsubsection{Variante 1 (wiederholte Divisionen mit Rest)}
 
 
 
