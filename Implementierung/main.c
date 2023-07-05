@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
     }
 
     size_t version = 0;
-    size_t repetitions = 0;
+    size_t repetitions = -1;
 
     //it could be that a positional argument with a negative number is in argv
     //before getopt_long takes it as an option because of the starting '-' check if it seems to have the correct format -number...
@@ -138,7 +138,6 @@ int main(int argc, char **argv) {
     if (is_bm1pi) {
         // String is a single number
 
-        // TODO: discuss if this is needed or too restrictive. (unary negation can also be interpreted)
         if (p_arg[0] == '-') {
             fprintf(stderr, "Wrong Format, a number in basis (-1+i) is unsigned. Exiting.\n");
             print_usage(program_name);
@@ -152,7 +151,16 @@ int main(int argc, char **argv) {
             print_usage(program_name);
             return EXIT_FAILURE;
         }
-        to_carthesian(bm1pi, &real, &imag);
+
+        switch (version) {
+            case 1:
+                to_carthesian_V1(bm1pi, &real, &imag);
+                break;
+            default:
+                to_carthesian(bm1pi, &real, &imag);
+                break;
+        }
+
         printf("%lld%c%lldi\n", (long long) real, (imag < 0 ? '\0' : '+'), (long long) imag);
     } else {
         // String contains a comma, treat it as "real,imag"
