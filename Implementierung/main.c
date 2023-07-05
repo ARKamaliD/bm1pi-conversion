@@ -145,23 +145,19 @@ int main(int argc, char **argv) {
         }
 
         char *endptr = NULL;
+        size_t bm1pi_len = strlen(p_arg);
+        if (bm1pi_len > 128) {
+            fprintf(stderr, "Positional Argument is longer than Expected (max 128 bit). Stop.\n");
+            print_usage(program_name);
+            return EXIT_FAILURE;
+        }
+        // TODO: input greater than 128 bit edge case -> interruption???
         bm1pi = (unsigned __int128) strtoull(p_arg, &endptr, 2);
-        if (endptr < p_arg + strlen(p_arg)) {
+        if (endptr < p_arg + bm1pi_len) {
             fprintf(stderr, "Wrong Format, a number in basis (-1+i) consists only of '1' and '0'. Exiting.\n");
             print_usage(program_name);
             return EXIT_FAILURE;
         }
-
-        switch (version) {
-            case 1:
-                to_carthesian_V1(bm1pi, &real, &imag);
-                break;
-            default:
-                to_carthesian(bm1pi, &real, &imag);
-                break;
-        }
-
-        printf("%lld%c%lldi\n", (long long) real, (imag < 0 ? '\0' : '+'), (long long) imag);
     } else {
         // String contains a comma, treat it as "real,imag"
         char *realStr = malloc((comma_pos - p_arg + 1) * sizeof(char));
@@ -182,14 +178,37 @@ int main(int argc, char **argv) {
             return EXIT_FAILURE;
         }
 
-        bm1pi = to_bm1pi(real, imag);
-        print_uint128_binary(bm1pi, false);
-
         free(realStr);
         free(imagStr);
     }
 
-    //TODO: Implement different program flow if options -V and -B are set.
+    //DONE: Implement different program flow if options -V and -B are set.
 
+    if (is_bm1pi) {
+        switch (version) {
+            case 0:
+                for (int i = 0; i < repetitions; ++i) {
+                    to_carthesian(bm1pi, &real, &imag);
+                }
+                break;
+            case 1:
+                for (int i = 0; i < repetitions; ++i) {
+                    to_carthesian_V1(bm1pi, &real, &imag);
+                }
+                break;
+            default:
+                fprintf(stderr, "Wrong version Number. Stop.\n");
+                print_usage(program_name);
+                return EXIT_FAILURE;
+        }
+        printf("%lld%c%lldi\n", (long long) real, (imag < 0 ? '\0' : '+'), (long long) imag);
+    } else {
+        for (int i = 0; i < repetitions; ++i) {
+            bm1pi = to_bm1pi(real, imag);
+        }
+        print_uint128_binary(bm1pi, false);
+    }
+
+    //TODO: implement test cases and performance testing using clocks and probably more cli options
     return EXIT_SUCCESS;
 }
