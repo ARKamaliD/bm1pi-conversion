@@ -187,12 +187,12 @@ int main(int argc, char **argv) {
     if (is_bm1pi) {
         switch (version) {
             case 0:
-                for (int i = 0; i < repetitions; ++i) {
+                for (int i = 0; i < ((repetitions == -1) ? 1 : repetitions); ++i) {
                     to_carthesian(bm1pi, &real, &imag);
                 }
                 break;
             case 1:
-                for (int i = 0; i < repetitions; ++i) {
+                for (int i = 0; i < ((repetitions == -1) ? 1 : repetitions); ++i) {
                     to_carthesian_V1(bm1pi, &real, &imag);
                 }
                 break;
@@ -203,7 +203,7 @@ int main(int argc, char **argv) {
         }
         printf("%lld%c%lldi\n", (long long) real, (imag < 0 ? '\0' : '+'), (long long) imag);
     } else {
-        for (int i = 0; i < repetitions; ++i) {
+        for (int i = 0; i < ((repetitions == -1) ? 1 : repetitions); ++i) {
             bm1pi = to_bm1pi(real, imag);
         }
         print_uint128_binary(bm1pi, false);
