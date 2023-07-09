@@ -20,13 +20,13 @@ void to_carthesian(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
     __int128 power = 1;
     for (int i = 0; i < bm1pi_length; i += 8) {
 
-        //i=0
+        //i=0,8,16,...
         if (bm1pi & mask) {
             *real += power;
         }
         mask <<= 1;
 
-        //i=1
+        //i=1,9,17,...
         if (bm1pi & mask) {
             *real -= power;
             *imag += power;
@@ -34,13 +34,13 @@ void to_carthesian(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
         mask <<= 1;
         power <<= 1;
 
-        //i=2
+        //i=2,10,18,...
         if (bm1pi & mask) {
             *imag -= power;
         }
         mask <<= 1;
 
-        //i=3
+        //i=3,11,19,..
         if (bm1pi & mask) {
             *real += power;
             *imag += power;
@@ -48,13 +48,13 @@ void to_carthesian(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
         mask <<= 1;
         power <<= 1;
 
-        //i=4
+        //i=4,12,20,...
         if (bm1pi & mask) {
             *real -= power;
         }
         mask <<= 1;
 
-        //i=5
+        //i=5,13,21,...
         if (bm1pi & mask) {
             *real += power;
             *imag -= power;
@@ -62,13 +62,13 @@ void to_carthesian(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
         mask <<= 1;
         power <<= 1;
 
-        //i=6
+        //i=6,14,22,...
         if (bm1pi & mask) {
             *imag += power;
         }
         mask <<= 1;
 
-        //i=7
+        //i=7,15,23,...
         if (bm1pi & mask) {
             *real -= power;
             *imag -= power;
