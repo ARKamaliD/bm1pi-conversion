@@ -1,7 +1,8 @@
-#include "conversion.h"
+#include <stdint.h>
 #include <immintrin.h>
 #include <emmintrin.h>
 
+#include "conversion.h"
 
 void to_carthesian(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
     //DONE: implement to_carthesian
@@ -102,36 +103,43 @@ unsigned __int128 to_bm1pi(__int128 real, __int128 imag) {
     return result;
 }
 
-//  TODO: alternative implementation of to_carthesian for performance comparison
-
+//  DONE: alternative implementation of to_carthesian for performance comparison
 
 void to_carthesian_V1(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
-/*
-    //  The conversion from bm1pi to cartesian can also be done as a matrix (2 by 128) - vector (128 bit) multiplication or a
+    *real = 0;
+    *imag = 0;
+
+    //  The conversion from bm1pi to cartesian can also be done as a matrix (2 by 128) - vector (128 bits) multiplication or a
     //  matrix a (2 by 8) - matrix (8 by 8) - matrix (8 by 2) multiplication realized with simd as the first variant is not going
-    //  fit in the 128 bit simd registers. For proof of correctness visit the documentation (../Ausarbeitung)
+    //  fit in the 128 bits simd registers. For proof of correctness visit the documentation (../Ausarbeitung)
 
-    const __m128i a_real = _mm_setr_epi16(1, -1, 0, 2, -4, 4, 0, -8);
-    const __m128i a_imag = _mm_setr_epi16(0, 1, -2, 2, 0, -4, 8, -8);
-    __m128i temp_real, temp_imag;
+    const __m128i real_row = _mm_setr_epi16(1, -1, 0, 2, -4, 4, 0, -8);
+    const __m128i imag_row = _mm_setr_epi16(0, 1, -2, 2, 0, -4, 8, -8);
+    __m128i temp_real, temp_imag, col;
 
-    for (int i = 0; i < 8; i++) {
-//        row1 = _mm_loadu_si128((__m128i *) &matrix1[i]);
-//        row2 = _mm_loadu_si128((__m128i *) &matrix2[j]);
-        temp_real = _mm_madd_epi16(a_real, a_imag);
-        temp_imag = _mm_madd_epi16(a_real, a_imag);
+    int16_t bits[16][8];
+    for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 8; j++) {
+            bits[i][j] = (int16_t) (bm1pi & 1);
+            bm1pi >>= 1;
+        }
     }
-    temp_real = _mm_hadd_epi32(temp_real, temp_real);
-    temp_real = _mm_hadd_epi32(temp_real, temp_real);
-    temp_imag = _mm_hadd_epi32(temp_imag, temp_imag);
-    temp_imag = _mm_hadd_epi32(temp_imag, temp_imag);
 
-    // Extract the result from the sum vector
-    *real = _mm_cvtsi128_si32(temp_real);
-    *imag = _mm_cvtsi128_si32(temp_imag);
-*/
- }
+    for (int i = 0; i < 16; i++) {
+        col = _mm_loadu_si128((__m128i *) &bits[i]);
+        temp_real = _mm_madd_epi16(real_row, col);
+        temp_real = _mm_hadd_epi32(temp_real, temp_real);
+        temp_real = _mm_hadd_epi32(temp_real, temp_real);
 
+        temp_imag = _mm_madd_epi16(imag_row, col);
+        temp_imag = _mm_hadd_epi32(temp_imag, temp_imag);
+        temp_imag = _mm_hadd_epi32(temp_imag, temp_imag);
+
+        // Extract the result from the sum vector
+        *real += ((__int128) (_mm_cvtsi128_si32(temp_real)) << (4 * i));
+        *imag += ((__int128) (_mm_cvtsi128_si32(temp_imag)) << (4 * i));
+    }
+}
 
 void to_carthesian_V2(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
     //DONE: implement to_carthesian
