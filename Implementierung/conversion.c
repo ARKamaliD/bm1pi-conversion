@@ -109,7 +109,7 @@ void to_carthesian_V1(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
 
     __int128 powZero = (bm1pi & (0b1));
     powZero -= (bm1pi & 0b10) >> 1;
-    __int128 powOne = bm1pi & 0b10;
+    __int128 powOne = (bm1pi & 0b10) >> 1;
 
     __int128 sumReal = 0;
     __int128 sumImag = 0;
