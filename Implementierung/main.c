@@ -131,7 +131,7 @@ int main(int argc, char **argv) {
     bool is_bm1pi = (comma_pos == NULL);
 
 
-    unsigned __int128 bm1pi;
+    unsigned __int128 bm1pi = 0;
     __int128 real = 0;
     __int128 imag = 0;
 
@@ -152,11 +152,24 @@ int main(int argc, char **argv) {
             return EXIT_FAILURE;
         }
         // TODO: input greater than 128 bit edge case -> interruption???
+/*
+        //older version of the parser has problem with values greater than 64 bit
         bm1pi = (unsigned __int128) strtoull(p_arg, &endptr, 2);
         if (endptr < p_arg + bm1pi_len) {
             fprintf(stderr, "Wrong Format, a number in basis (-1+i) consists only of '1' and '0'. Exiting.\n");
             print_usage(program_name);
             return EXIT_FAILURE;
+        }
+*/
+        for (int i = 0; i < bm1pi_len; i++) {
+            bm1pi <<= 1;
+            if (p_arg[i] == '1') {
+                bm1pi |= 1;
+            } else if (p_arg[i] != '0') {
+                fprintf(stderr, "Wrong Format, a number in basis (-1+i) consists only of '1' and '0'. Exiting.\n");
+                print_usage(program_name);
+                return EXIT_FAILURE;
+            }
         }
     } else {
         // String contains a comma, treat it as "real,imag"
