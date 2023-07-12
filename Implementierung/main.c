@@ -1,9 +1,11 @@
+#define _POSIX_C_SOURCE 199309L
+
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
 #include <stdbool.h>
 #include <string.h>
-
 #include "conversion.h"
 
 const char *usage_msg =
@@ -197,13 +199,23 @@ int main(int argc, char **argv) {
 
     //DONE: Implement different program flow if options -V and -B are set.
 
+
     if (is_bm1pi) {
         switch (version) {
-            case 0:
+            case 0: {
+                struct timespec start;
+                clock_gettime(CLOCK_MONOTONIC, &start);
                 for (int i = 0; i < ((repetitions == -1) ? 1 : repetitions); ++i) {
                     to_carthesian(bm1pi, &real, &imag);
                 }
+                struct timespec end;
+                clock_gettime(CLOCK_MONOTONIC, &end);
+                double time = end.tv_sec - start.tv_sec + 1e-9 * (end.tv_nsec - start.tv_nsec);
+                double avg_time = time / repetitions;
+                printf("Time %f\n",time);
+                printf("Average Time %f\n",avg_time);
                 break;
+            }
             case 1:
                 for (int i = 0; i < ((repetitions == -1) ? 1 : repetitions); ++i) {
                     to_carthesian_V1(bm1pi, &real, &imag);
