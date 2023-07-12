@@ -169,7 +169,27 @@ Für den zweiten Teil können wir nochmal die Formel (\ref{sumFormel}) in Gebrau
 
 \newpage
 \subsection{Praktischer Teil:}
-\subsubsection{Variante 1 (wiederholte Divisionen mit Rest)}
+\subsubsection{to\_carthesian Methode (1.Variante)} 
+Zuerst ermitteln wir mithilfe einer Maske und einer Schleife die reine Länge des Binärwerts  \textit{bm1pi}  \space ohne vorgehende Nullen. Der Gründ dafür ist, dass unsere Zahlen(Folgen von 0 und 1), ab einer bestimmten Stelle nach Links nur Nullen enthalten könnten und aus Effizienz Gründen wollen wir nicht ohne Grund jedes Mal die Ganze Zahl bis Ende durchiterieren.\newline
+
+Nun die intuitivste Lösung wäre es, unsere Formel (\ref{sumFormel}) zu nutzen, aber um dies zu tun mussten wir für jedes einzelne Bit in  \textit{bm1pi} , die 1 ist, $(-1+i)^{n}$ gemäß seiner Position in der Zahl berechnen und anschließend alle miteinander addieren, was wegen der stetigen Potenzierung, die Effizienz unseres Codes stark verringert, unerwünscht war. Daher haben wir uns dazu entschlossen, die $(-1+i)^{n}$ für eine begrenzte Anzahl von n zu berechnen und ein Muster zu finden, damit wir weder Mathe Bibliothek noch Potenz nutzen müssen. 
+
+Gemäß unseres gefundenen Musters gibt es eine Relation zwischen jede acht Ziffer unserer Zahl deswegen haben wir unsere Zahl in Abschnitten der Länge 8 geteilt und in jeder Iteration überprüfen wir in jedem Abschnitt ob die Bits der Zahl gesetzt sind und führen wir gemäß des Musters die Berechnungen durch. 
+
+\subsubsection{to\_carthesian Methode (2.Variante)}
+In dieser Variante versuchen wir unsere Zahl bit by bit zu iterieren und nach jeder Iteration die Zahl nach rechts zu schieben, solange unsere Zahl noch nicht Null geworden ist. Dann werden die ersten beiden Bits von  \textit{bm1pi}  \space extrahiert und in den Variablen \textit{powZero} \space und \textit{powOne}\space gespeichert. Diese repräsentieren die Potenzen 0 und 1 der komplexen Zahl.  In jeder Iteration berechnen wir den zugehörigen Potenz von $(-1+i)^{n}$ beginnend von $n=2$ in steigender Reihenfolge. Wenn das aktuelle Bit von \textit{bm1pi} gesetzt (1) ist, werden \textit{baseReal} und \textit{baseImag} zur Summe der Real- und Imaginärteile hinzugefügt.Nachdem alle bits von \textit{bm1pi} durchlaufen wurden, werden die berechneten Werte von \textit{sumReal} und \textit{sumImag} auf die Variablen \textit{real} und \textit{imag} addiert. Diese Variablen sind Zeiger auf Speicher, in dem die Ergebnisse der Berechnung gespeichert werden. Als Optimierung haben wir den bisher gerechneten Potenz von $(-1+i)^{n}$ in einem Variable gespeichert und zur Berechnung des nächsten Potenzes multiplizieren es nur einmal mit $(-1+i)$ statt vom Anfang beginnen, $(-1+i)^{n}$ zu rechnen.
+
+\subsubsection{to\_bm1pi Methode (1.Variante)}
+In dieser Methode wollen wir den Algorithmus, den wir in praktischen Teil ausführlich erklärt haben, in C Code implementieren.
+
+Unser Code verwendet eine Schleife, solange entweder alle 128 Bits der Ausgabe berechnet wurden oder beide Reell und Imaginär Teil unserer komplexen Zahl Null werden. Die Variable \textit{result} ist die Ausgabe der Funktion und wird initial auf 0 gesetzt. Die Variable \textit{mask} wird verwendet, um das Bit in \textit{result} zu setzen, entsprechend dem aktuellen Schleifendurchlauf.
+
+
+In jedem Schleifendurchlauf wird überprüft, ob sowohl der imaginäre als auch der reale Teil des komplexen Werts ungerade sind oder beide gerade sind. Wenn dies der Fall ist, werden die realen und imaginären Teile entsprechend aktualisiert, ohne das Ergebnis zu ändern. Andernfalls werden die realen und imaginären Teile aktualisiert, und das aktuelle Bit in \textit{result} wird auf 1 gesetzt.
+
+Am Ende der Schleife wird das Ergebnis \textit{result} zurückgegeben, das die 128-Bit-BM1PI-Repräsentation des ursprünglichen komplexen Werts darstellt.
+
+\subsubsection{to\_bm1pi Methode (2.Variante)}
 
 
 
