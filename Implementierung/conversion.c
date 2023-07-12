@@ -11,26 +11,17 @@ void to_carthesian(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
 
     if (bm1pi == 0) return;
 
-    unsigned __int128 mask = (unsigned __int128) 1 << 127;
-    int bm1pi_length = 0;
-    for (int i = 0; i < 128; ++i, mask >>= 1) {
-        if (bm1pi & mask) {
-            bm1pi_length = 128 - i;
-            break;
-        }
-    }
-
-    mask = 1;
+    unsigned __int128 mask = 1;
     __int128 power = 1;
-    for (int i = 0; i < bm1pi_length; i += 8) {
+    for (int i = 0; i < 16; ++i) {
 
-        //i=0,8,16,...
+        //0,8,16,...
         if (bm1pi & mask) {
             *real += power;
         }
         mask <<= 1;
 
-        //i=1,9,17,...
+        //1,9,17,...
         if (bm1pi & mask) {
             *real -= power;
             *imag += power;
@@ -38,13 +29,13 @@ void to_carthesian(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
         mask <<= 1;
         power <<= 1;
 
-        //i=2,10,18,...
+        //2,10,18,...
         if (bm1pi & mask) {
             *imag -= power;
         }
         mask <<= 1;
 
-        //i=3,11,19,..
+        //3,11,19,..
         if (bm1pi & mask) {
             *real += power;
             *imag += power;
@@ -52,13 +43,13 @@ void to_carthesian(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
         mask <<= 1;
         power <<= 1;
 
-        //i=4,12,20,...
+        //4,12,20,...
         if (bm1pi & mask) {
             *real -= power;
         }
         mask <<= 1;
 
-        //i=5,13,21,...
+        //5,13,21,...
         if (bm1pi & mask) {
             *real += power;
             *imag -= power;
@@ -66,7 +57,7 @@ void to_carthesian(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
         mask <<= 1;
         power <<= 1;
 
-        //i=6,14,22,...
+        //6,14,22,...
         if (bm1pi & mask) {
             *imag += power;
         }
@@ -110,7 +101,7 @@ void to_carthesian_V1(unsigned __int128 bm1pi, __int128 *real, __int128 *imag) {
     *imag = 0;
 
     //  The conversion from bm1pi to cartesian can also be done as a matrix (2 by 128) - vector (128 bits) multiplication or a
-    //  matrix a (2 by 8) - matrix (8 by 8) - matrix (8 by 2) multiplication realized with simd as the first variant is not going
+    //  matrix a (2 by 8) - matrix (8 by 16) - matrix (16 by 1) multiplication realized with simd as the first variant is not going
     //  fit in the 128 bits simd registers. For proof of correctness visit the documentation (../Ausarbeitung)
 
     const __m128i real_row = _mm_setr_epi16(1, -1, 0, 2, -4, 4, 0, -8);
