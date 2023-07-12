@@ -173,10 +173,49 @@ Für den zweiten Teil können wir nochmal die Formel (\ref{sumFormel}) in Gebrau
 
 
 
-% TODO: Je nach Aufgabenstellung einen der Begriffe wählen
-\section{Korrektheit/Genauigkeit}
+% Done: Je nach Aufgabenstellung einen der Begriffe wählen
+\section{Korrektheit}
+Wir haben umfangreiche Tests für die Funktion \textit{to\_carthesian} durchgeführt und freuen uns, bekannt zu geben, dass die Implementierung erfolgreich funktioniert. Die Funktion konvertiert eine gegebene Zahl im BM1PI-Format in die entsprechenden kartesischen Koordinaten.
+
+Wir haben eine Vielzahl von Testfällen abgedeckt, darunter positive und negative Zahlen, verschiedene Kombinationen von Bits und verschiedene Längen von BM1PI-Zahlen. In jedem Testfall wurde die Funktion aufgerufen, und die erhaltenen kartesischen Koordinaten wurden mit den erwarteten Werten verglichen.
+
+Bei allen Tests hat die Implementierung den korrekten Ergebnissen geliefert. Die berechneten kartesischen Koordinaten stimmten genau mit den erwarteten Werten überein. Dies bestätigt, dass der Code korrekt implementiert worden ist.
+
+Darüber hinaus wurden auch Spezialfälle wie die Konvertierung von Null oder sehr großen BM1PI-Zahlen getestet. Auch hier hat die Implementierung konsistente und korrekte Ergebnisse geliefert.
+
+Die erfolgreichen Tests bestätigen, dass die Funktion \textit{to\_carthesian} zuverlässig arbeitet und die vorgegebenen Anforderungen erfüllt.
+
+Außerdem kann man auch mit mathematischen Formeln, die schon in Einleitung und Theoretischem Teil vom Lösungsansatz erwähnt wurden(Formel \ref{sumFormel}), kann man die Korrektheit unserer Implementierung nochmal beweisen.
+
+Hier sind einige Beispielen und Testfällen mit den erwarteten Ergebnissen(laut der Berechnungen mit mathematischen Formeln) und tatsächlich gelieferten Ergebnissen von der jeweiligen Methode:
+\subsection{to\_carthesian Methode}
+
+\begin{enumerate}[label=\roman*)]
+    \item Eingabe: 0 \quad Ausgabe: $0+0i$ \quad Erwartet: $0+0i$
+    \item Eingabe: $\smash[b]{\underbrace{111\cdots1}_{128 \text{ times}}}$ \quad \quad \space Ausgabe: $-7378697629483820646-3689348814741910323i$ \vskip \qquad \qquad \qquad  \qquad \qquad Erwartet: $-7378697629483820646-3689348814741910323i
+    $
+    \item Eingabe: 00011101001 \quad Ausgabe: $-1-2i$ \quad Erwartet: $-1-2i$
+    \item Eingabe: $\smash[b]{1\!\underbrace{000\cdots0}_{127 \text{ times}}}$ \quad \quad Ausgabe:
+    $-9223372036854775808-9223372036854775808i$ \vskip \qquad \qquad \qquad \qquad \qquad \space Erwartet: $-9223372036854775808-9223372036854775808i$
+\end{enumerate}
+
+\subsection{to\_bm1pi Methode}
+\begin{enumerate}[label=\roman*)]
+    \item Eingabe: 0,0 \quad  Ausgabe: $0$ \quad Erwartet: $0$
+    \item Eingabe: 3,2 \quad Ausgabe: $1001$ \quad Erwartet: $1001$
+    \item Eingabe: 123456789,123456789 \newline Ausgabe: $111010000110011010001110000011101110111011100000111001101110
+    $ \newline Erwartet: $111010000110011010001110000011101110111011100000111001101110
+    $
+    \item Eingabe: -123456789,-123456789 \newline Ausgabe: $10001110100010000110000001100110011001100000011011100110
+    $ \newline Erwartet:
+    $10001110100010000110000001100110011001100000011011100110
+    $
+\end{enumerate}
+\section{Performanzanalyse}
 
 \section{Zusammenfassung und Ausblick}
+
+\section{Quellenverzeichnis}
 
 % TODO: Fuegen Sie Ihre Quellen der Datei Ausarbeitung.bib hinzu
 % Referenzieren Sie diese dann mit \cite{}.
