@@ -190,40 +190,79 @@ int main(int argc, char **argv) {
 
     //DONE: Implement different program flow if options -V and -B are set.
 
-    if (is_bm1pi) {
-        switch (version) {
-            case 0: {
-                struct timespec start;
-                clock_gettime(CLOCK_MONOTONIC, &start);
-                for (int i = 0; i < ((repetitions == -1) ? 1 : repetitions); ++i) {
+    if (repetitions == -1) {
+        if (is_bm1pi) {
+            switch (version) {
+                case 0:
                     to_carthesian(bm1pi, &real, &imag);
-                }
-                struct timespec end;
-                clock_gettime(CLOCK_MONOTONIC, &end);
-                double time = end.tv_sec - start.tv_sec + 1e-9 * (end.tv_nsec - start.tv_nsec);
-                double avg_time = time / repetitions;
-                printf("Time %f\n", time);
-                printf("Average Time %f\n", avg_time);
-                break;
-            }
-            case 1:
-                for (int i = 0; i < ((repetitions == -1) ? 1 : repetitions); ++i) {
+                    break;
+                case 1:
                     to_carthesian_V1(bm1pi, &real, &imag);
-                }
-                break;
-            default:
-                fprintf(stderr, "Wrong version Number. Stop.\n");
-                print_usage(program_name);
-                return EXIT_FAILURE;
-        }
-        printf("%lld%c%lldi\n", (long long) real, (imag < 0 ? '\0' : '+'), (long long) imag);
-    } else {
-        for (int i = 0; i < ((repetitions == -1) ? 1 : repetitions); ++i) {
+                    break;
+                default:
+                    fprintf(stderr, "Wrong version Number. Stop.\n");
+                    print_usage(program_name);
+                    return EXIT_FAILURE;
+            }
+            printf("%lld%c%lldi\n", (long long) real, (imag < 0 ? '\0' : '+'), (long long) imag);
+        } else {
             bm1pi = to_bm1pi(real, imag);
+            print_uint128_binary(bm1pi, false);
         }
-        print_uint128_binary(bm1pi, false);
+    } else {
+        if (is_bm1pi) {
+            switch (version) {
+                case 0: {
+                    struct timespec start;
+                    clock_gettime(CLOCK_MONOTONIC, &start);
+                    for (int i = 0; i < repetitions; ++i) {
+                        to_carthesian(bm1pi, &real, &imag);
+                    }
+                    struct timespec end;
+                    clock_gettime(CLOCK_MONOTONIC, &end);
+                    double time = end.tv_sec - start.tv_sec + 1e-9 * (end.tv_nsec - start.tv_nsec);
+                    double avg_time = time / repetitions;
+                    printf("Time %f\n", time);
+                    printf("Average Time %f\n", avg_time);
+                    break;
+                }
+                case 1: {
+                    struct timespec start;
+                    clock_gettime(CLOCK_MONOTONIC, &start);
+                    for (int i = 0; i < repetitions; ++i) {
+                        to_carthesian_V1(bm1pi, &real, &imag);
+                    }
+                    struct timespec end;
+                    clock_gettime(CLOCK_MONOTONIC, &end);
+                    double time = end.tv_sec - start.tv_sec + 1e-9 * (end.tv_nsec - start.tv_nsec);
+                    double avg_time = time / repetitions;
+                    printf("Time %f\n", time);
+                    printf("Average Time %f\n", avg_time);
+                    break;
+                }
+                default:
+                    fprintf(stderr, "Wrong version Number. Stop.\n");
+                    print_usage(program_name);
+                    return EXIT_FAILURE;
+            }
+            printf("%lld%c%lldi\n", (long long) real, (imag < 0 ? '\0' : '+'), (long long) imag);
+        } else {
+            struct timespec start;
+            clock_gettime(CLOCK_MONOTONIC, &start);
+            for (int i = 0; i < repetitions; ++i) {
+                bm1pi = to_bm1pi(real, imag);
+            }
+            struct timespec end;
+            clock_gettime(CLOCK_MONOTONIC, &end);
+            double time = end.tv_sec - start.tv_sec + 1e-9 * (end.tv_nsec - start.tv_nsec);
+            double avg_time = time / repetitions;
+            printf("Time %f\n", time);
+            printf("Average Time %f\n", avg_time);
+            print_uint128_binary(bm1pi, false);
+        }
+
     }
 
-    //TODO: implement test cases and performance testing using clocks and probably more cli options
+    //DONE: implement test cases and performance testing using clocks and probably more cli options
     return EXIT_SUCCESS;
 }
