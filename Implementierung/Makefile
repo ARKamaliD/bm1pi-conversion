@@ -1,5 +1,5 @@
 # Add additional compiler flags here
-CFLAGS=-std=c17 -O0 -msse4.1
+CFLAGS=-std=c17 -O3 -msse4.1
 
 .PHONY: all
 all: main
