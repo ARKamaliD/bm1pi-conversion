@@ -153,16 +153,7 @@ int main(int argc, char **argv) {
             print_usage(program_name);
             return EXIT_FAILURE;
         }
-        // TODO: input greater than 128 bit edge case -> interruption???
-/*
-        //older version of the parser has problem with values greater than 64 bit
-        bm1pi = (unsigned __int128) strtoull(p_arg, &endptr, 2);
-        if (endptr < p_arg + bm1pi_len) {
-            fprintf(stderr, "Wrong Format, a number in basis (-1+i) consists only of '1' and '0'. Exiting.\n");
-            print_usage(program_name);
-            return EXIT_FAILURE;
-        }
-*/
+
         for (int i = 0; i < bm1pi_len; i++) {
             bm1pi <<= 1;
             if (p_arg[i] == '1') {
@@ -199,7 +190,6 @@ int main(int argc, char **argv) {
 
     //DONE: Implement different program flow if options -V and -B are set.
 
-
     if (is_bm1pi) {
         switch (version) {
             case 0: {
@@ -212,8 +202,8 @@ int main(int argc, char **argv) {
                 clock_gettime(CLOCK_MONOTONIC, &end);
                 double time = end.tv_sec - start.tv_sec + 1e-9 * (end.tv_nsec - start.tv_nsec);
                 double avg_time = time / repetitions;
-                printf("Time %f\n",time);
-                printf("Average Time %f\n",avg_time);
+                printf("Time %f\n", time);
+                printf("Average Time %f\n", avg_time);
                 break;
             }
             case 1:
