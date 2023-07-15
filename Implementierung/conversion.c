@@ -80,7 +80,7 @@ unsigned __int128 to_bm1pi(__int128 real, __int128 imag) {
 
     for (int i = 0; i < 128 && (real || imag); ++i, mask <<= 1) {
         __int128 temp = real; //secure the current value of real
-        if ((real & 1 && imag & 1) || (!(real & 1) && !(imag & 1))) {
+        if ((real & 1) == (imag & 1)) {
             // (imag - real) and (-temp - imag) are both even -> no remainder -> don't change result
             real = (imag - real) >> 1;
             imag = (-temp - imag) >> 1;
