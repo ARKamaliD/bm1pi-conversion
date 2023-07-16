@@ -206,6 +206,11 @@ int main(int argc, char **argv) {
             }
             printf("%lld%c%lldi\n", (long long) real, (imag < 0 ? '\0' : '+'), (long long) imag);
         } else {
+            if (version != 0) {
+                fprintf(stderr, "Wrong version Number. Stop.\n");
+                print_usage(program_name);
+                return EXIT_FAILURE;
+            }
             bm1pi = to_bm1pi(real, imag);
             print_uint128_binary(bm1pi, false);
         }
@@ -223,7 +228,7 @@ int main(int argc, char **argv) {
                     double time = (double) (end.tv_sec - start.tv_sec) + 1e-9 * (double) (end.tv_nsec - start.tv_nsec);
                     double avg_time = (time / (double) repetitions);
                     printf("Time %f\n", time);
-                    printf("Average Time %f\n", avg_time);
+                    printf("Average Time %.15f\n", avg_time);
                     break;
                 }
                 case 1: {
@@ -237,7 +242,7 @@ int main(int argc, char **argv) {
                     double time = (double) (end.tv_sec - start.tv_sec) + 1e-9 * (double) (end.tv_nsec - start.tv_nsec);
                     double avg_time = (time / (double) repetitions);
                     printf("Time %f\n", time);
-                    printf("Average Time %f\n", avg_time);
+                    printf("Average Time %.15f\n", avg_time);
                     break;
                 }
                 default:
@@ -247,6 +252,11 @@ int main(int argc, char **argv) {
             }
             printf("%lld%c%lldi\n", (long long) real, (imag < 0 ? '\0' : '+'), (long long) imag);
         } else {
+            if (version != 0) {
+                fprintf(stderr, "Wrong version Number. Stop.\n");
+                print_usage(program_name);
+                return EXIT_FAILURE;
+            }
             struct timespec start;
             clock_gettime(CLOCK_MONOTONIC, &start);
             for (int i = 0; i < repetitions; ++i) {
@@ -257,7 +267,7 @@ int main(int argc, char **argv) {
             double time = (double) (end.tv_sec - start.tv_sec) + 1e-9 * (double) (end.tv_nsec - start.tv_nsec);
             double avg_time = (time / (double) repetitions);
             printf("Time %f\n", time);
-            printf("Average Time %f\n", avg_time);
+            printf("Average Time %.15f\n", avg_time);
             print_uint128_binary(bm1pi, false);
         }
 
