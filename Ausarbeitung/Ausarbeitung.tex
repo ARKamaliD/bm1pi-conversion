@@ -88,15 +88,16 @@
 
     \subsection{Theoretischer Teil:}
     Generell gilt, wenn man eine Zahl zu einer neuen Basis umwandeln will, teilt man die Zahl wiederholt durch die neue Basis und notiert die Reste.
-    Im Fall von der Basis $-1+i$ wissen wir, dass der Rest bei der Umwandlung einer Gaußschen Zahl entweder 0 oder 1 ist.\cite{complex_base_conversion}
+    Im Fall von der Basis $-1+i$ wissen wir, dass der Rest bei der Umwandlung einer gaußschen Zahl entweder 0 oder 1 ist.\cite{complex_base_conversion}
     \newpage
-    Nehmen wir eine Zahl $n + im$ und teilen sie durch die gewählte Basis:
+    Nimmt man eine Zahl $n + im$ und teilt sie durch die gewählte Basis:
 
     \[\frac{{n + im}}{{-1 + i}} = \frac{{(n + im)(-1 - i)}}{2} = \frac{{m - n}}{2} - i\frac{{n + m}}{2}\]
 
-    Wenn sowohl n als auch m gerade oder beide ungerade sind, dann sind sowohl $m-n$ als auch $m+n$ gerade. Das Ergebnis der Division ist eine Zahl und der Rest ist 0.
+    Wenn sowohl n als auch m gerade oder beide ungerade sind, dann sind sowohl $m-n$ als auch $m+n$ gerade.
+    Das Ergebnis der Division ist eine gaußsche Zahl und der Rest ist 0.
 
-    Diese Formulierung berücksichtigt, dass der Zähler und der Nenner mit $-1-i$  (dem konjugierten Komplexen der Basis) multipliziert wurden und dass der Rest 0 ist.
+    Diese Formulierung berücksichtigt, dass der Zähler und der Nenner mit $-1-i$ (dem konjugierten Komplexen der Basis) multipliziert wurden und dass der Rest 0 ist.
 
     \[\frac{{m - n}}{{2}} - i\frac{{n + m}}{2}\]
 
@@ -104,24 +105,28 @@
 
     \[\frac{{n + im}}{{-1 + i}} = \frac{{m - n + 1}}{2} - i \frac{{n + m -1}}{2} - \frac{{1}}{2}(1 + i)\]
 
-    In diesem Fall ist das Ergebnis der Division die folgende Gaußsche Zahl:
+    In diesem Fall ist das Ergebnis der Division die folgende gaußsche Zahl:
 
     \[\frac{{m - n + 1}}{{2}} - i\frac{{n + m - 1}}{2}\]
 
-    und der Rest ist 1. Tatsächlich gilt:
+    und der Rest ist 1.
+    Es gilt:
 
     \[(-1 +i) (\frac{m - n + 1}{2} - i \frac{n + m - 1}{2}) = n +im - 1\]
-    Man kann diese Vorgehensweise mit den resultierenden Zahlen wiederholen, bis die ursprüngliche Zahl aufgrund der wiederholten Divisionen durch 2 verschwindet und die Sequenz der Reste erhalten bleibt...
+    Man kann diese Vorgehensweise mit den resultierenden Zahlen wiederholen, bis die ursprüngliche Zahl aufgrund der wiederholten Divisionen durch 2 verschwindet und die Sequenz der Reste erhalten bleibt.
     \newline
 
-    Lassen Sie uns den Algorithmus anhand der angegebenen Zahl $3 + 2i$ veranschaulichen:
+    Wir werden jetzt den Algorithmus anhand der angegebenen Zahl $3 + 2i$ veranschaulichen:
 
     Wenn
     \[(m - n) - i(n+m)=(2-3) - i(2 + 3) = -1 - 5i\]
 
-    (siehe das zweite Spaltenpaar in der folgenden Tabelle) durch 2 teilbar wäre, würden sich die Werte im dritten Spaltenpaar unverändert wiederholen und der Rest wäre null (siehe Spalte \textit{REMAINDER}). Da $3 + 2 i$ jedoch nicht durch zwei teilbar ist, erfolgt eine Modifikation gemäß der Formel :
+    (siehe das zweite Spaltenpaar in der folgenden Tabelle) durch 2 teilbar wäre, würden sich die Werte im dritten Spaltenpaar unverändert wiederholen und der Rest wäre 0 (siehe Spalte \textit{REMAINDER}). Da $3 + 2 i$ jedoch nicht durch 2 teilbar ist, erfolgt eine Modifikation gemäß der oberen Formel:
     \[(m - n + 1) - i(n + m - 1)= 0 - 4 i\]
-    und der Rest ist 1. Das erste Spaltenpaar zeigt auf das Ergebnis der ersten Division. (Die Division durch 2 wird jetzt durchgeführt.) Anschließend wird der oben beschriebene Schritt wiederholt, bis der entsprechende Wert im dritten Spaltenpaar zu $0 + i0$ geworden ist.
+    und der Rest ist 1.
+    Das erste Spaltenpaar zeigt auf das Ergebnis der ersten Division.
+    (Die Division durch 2 wird jetzt durchgeführt).
+    Anschließend wird der oben beschriebene Schritt wiederholt, bis der entsprechende Wert im dritten Spaltenpaar (siehe Spalte \textit{MODIFIED}) $0 + i0$ enthält.
     \\
 
     \begin{table}[!ht]
@@ -137,10 +142,11 @@
         \end{tabular}
     \end{table}
 
-    Endlich haben wir es geschafft! Jetzt brauchen wir nur die Restspalte (Remainder) einfach von unten nach oben nacheinander verfassen und erhalten wir am Ende unsere Zahl in der Basis $(-1+i)$.
+    Endlich haben wir es geschafft!
+    Jetzt müssen wir nur noch die Restspalte (Remainder) einfach von unten nach oben nacheinander verfassen und dann erhalten wir die resultierende Zahl in der Basis $(-1+i)$.
     \[(3 + 2i)_{10} = (1001)_{-1+i}\]
     \newline
-    Um die Korrektheit unseres Ergebnis zu überprüfen, können wir die oben gennanten Formel(\ref{sumFormel}) zum Einsatz bringen, um unsere Zahl in Basis $(-1+i)$ wieder in Basis 10 zu wechseln:
+    Um die Korrektheit von unserem Ergebnis zu überprüfen, können wir die oben genannten Formel(\ref{sumFormel}) zum Einsatz bringen, um unsere Zahl in Basis $(-1+i)$ wieder in Basis 10 zu konvertieren:
     \begin{equation*}
         \begin{split}
         (1001)
@@ -150,7 +156,7 @@
         \end{split}
     \end{equation*}
 
-    Für den zweiten Teil können wir nochmal die Formel (\ref{sumFormel}) in Gebrauch nehmen, um es zu beweisen, dass die angeforderten Komplexe Zahlen zur Basis $(-1+i)$ mit binären Koeffizienten darstellbar sind.
+    Für den zweiten Teil der Aufgabe können wir nochmal die Formel (\ref{sumFormel}) in Gebrauch nehmen, um es zu beweisen, dass die angeforderten Komplexe Zahlen zur Basis $(-1+i)$ mit binären Koeffizienten darstellbar sind.
 
     \begin{enumerate}[label=\roman*) Falls]
         \item a = -1, b = -1:
@@ -160,7 +166,8 @@
         \begin{equation*}
             \begin{split}
                 -1 + 0i  &= (-4) + (2+2i) + (-2i) + 0 + 1 \\
-                &= 1*(-1+i)^4 + 1*(-1+i)^3 + 1*(-1+i)^2 + 0*(-1+i)^1 + 1*(-1+i)^0 \\
+                &= 1*(-1+i)^4 + 1*(-1+i)^3 + 1*(-1+i)^2 + 0*(-1+i)^1 \\
+                &+ 1*(-1+i)^0 \\
                 &=  (11101)_{-1+i}
             \end{split}
         \end{equation*}
@@ -170,7 +177,13 @@
         \[ -1 + i = (-1+i) + 0 = 1*(-1+i)^1 + 0*(-1+i)^0 =  (10)_{-1+i}\]
 
         \item a = 0, b = -1:
-        \[ 0 + (-i)  = (-2i) + (-1+i) + 1 = 1*(-1+i)^2 + 1*(-1+i)^1 + 1*(-1+i)^0 =  (111)_{-1+i}\]
+        \begin{equation*}
+            \begin{split}
+                0 + (-i)  &= (-2i) + (-1+i) + 1 = 1*(-1+i)^2 + 1*(-1+i)^1 + 1*(-1+i)^0 \\
+                &=  (111)_{-1+i}
+            \end{split}
+        \end{equation*}
+
 
         \item a = 0, b = 0:
         \[ 0 + 0i  = 0 = 0*(-1+i)^0 =  (0)_{-1+i}\]
@@ -182,7 +195,8 @@
         \begin{equation*}
             \begin{split}
                 1 - i &=(4 -4i) + (-4) + (2+2i) + 0 + (-1+i) + 0 \\
-                &= 1*(-1+i)^5 + 1*(-1+i)^4 + 1*(-1+i)^3 + 0*(-1+i)^2 + 1*(-1+i)^1 + 0*(-1+i)^0 \\
+                &= 1*(-1+i)^5 + 1*(-1+i)^4 + 1*(-1+i)^3 + 0*(-1+i)^2 \\
+                &+ 1*(-1+i)^1 + 0*(-1+i)^0 \\
                 &= (111010)_{-1+i}
             \end{split}
         \end{equation*}
@@ -191,29 +205,45 @@
         \[ 1 + 0i  = 1 = 1*(-1+i)^0 =  (1)_{-1+i}\]
 
         \item a = 1, b = 1:
-        \[ 1 + i  = (2+2i) + (-2i) + (-1+i) + 0 = 1*(-1+i)^3 + 1*(-1+i)^2 + 1*(-1+i)^1 + 0*(-1+i)^0 =  (1110)_{-1+i}\]
+        \begin{equation*}
+            \begin{split}
+                1 + i  &= (2+2i) + (-2i) + (-1+i) + 0 \\
+                &= 1*(-1+i)^3 + 1*(-1+i)^2 + 1*(-1+i)^1 + 0*(-1+i)^0 \\
+                &=  (1110)_{-1+i}
+            \end{split}
+        \end{equation*}
+
     \end{enumerate}
 
     \newpage
 
     \subsection{Praktischer Teil:}
 
-    \subsubsection{to\_carthesian Methode (1.Variante)}
-    Zuerst ermitteln wir mithilfe einer Maske und einer Schleife die reine Länge des Binärwerts  \textit{bm1pi}  \space ohne vorgehende Nullen. Der Gründ dafür ist, dass unsere Zahlen(Folgen von 0 und 1), ab einer bestimmten Stelle nach Links nur Nullen enthalten könnten und aus Effizienz Gründen wollen wir nicht ohne Grund jedes Mal die Ganze Zahl bis Ende durchiterieren.\newline
+    \subsubsection{to\_carthesian Methode (1. Variante)}
+    Am Anfang wollten wir mithilfe einer Maske und einer Schleife die Länge des Binärwerts  \textit{bm1pi}  \space ohne führenden Nullen berechnen aus Effizienz Gründen nicht ohne Grund jedes Mal die ganzen Ziffern der Zahl bis zum Ende durchiterieren.
+    Später haben wir aber diese Optimierung vom Code weggelassen, da diese mit der Optimierungsstufe -O3 schlechtere Performanz hatte als, wenn es nicht da gäbe.\newline
 
-    Nun die intuitivste Lösung wäre es, unsere Formel (\ref{sumFormel}) zu nutzen, aber um dies zu tun mussten wir für jedes einzelne Bit in  \textit{bm1pi} , die 1 ist, $(-1+i)^{n}$ gemäß seiner Position in der Zahl berechnen und anschließend alle miteinander addieren, was wegen der stetigen Potenzierung, die Effizienz unseres Codes stark verringert, unerwünscht war. Daher haben wir uns dazu entschlossen, die $(-1+i)^{n}$ für eine begrenzte Anzahl von n zu berechnen und ein Muster zu finden, damit wir weder Mathe Bibliothek noch Potenz nutzen müssen.
+    Nun wäre die intuitive Lösung, die Formel (\ref{sumFormel}) zu nutzen, aber um dies zu tun, mussten wir für jedes einzelne Bit in  \textit{bm1pi} , die 1 ist, $(-1+i)^{n}$ anhand seiner Position in der Zahl berechnen und anschließend alle miteinander addieren.
+    Das könnte aber unerwünscht die Effizienz unseres Codes stark verringern, weil die Potenzen von $(-1+i)$ neu berechnet werden müssen.
+    Damit wir weder Mathematik Bibliotheken noch Potenz Funktion nutzen müssen, haben wir die Entscheidung getroffen, die $(-1+i)^{n}$ für eine begrenzte Anzahl von Potenzen vorherzuberechnen und die restlichen durch ein Muster zusammenzusetzen.
 
-    Gemäß unseres gefundenen Musters gibt es eine Relation zwischen jede acht Ziffer unserer Zahl deswegen haben wir unsere Zahl in Abschnitten der Länge 8 geteilt und in jeder Iteration überprüfen wir in jedem Abschnitt ob die Bits der Zahl gesetzt sind und führen wir gemäß des Musters die Berechnungen durch.
+    Gemäß dem gefundenen Muster gibt es eine Relation zwischen jede achte Potenz vom $(-1+i)$ deswegen haben wir die eingegebene Zahl in Abschnitten der Länge 8 geteilt und in jeder Iteration überprüfen wir an jeder Stelle, ob die entsprechende Bit der Zahl gesetzt ist und falls ja, führen wir dem Muster nach die Berechnungen durch.
 
-    \subsubsection{to\_carthesian Methode (2.Variante)}
-    In dieser Variante verwenden wir eine Matrixmultiplikation, um die Konvertierung durchzuführen. Es gibt zwei vordefinierte Vektoren \textit{real\_row} und \textit{imag\_row}, die die Einträge von Matrix darstellen. Jeder Vektor enthält 8 Werte vom Typ \textit{int16\_t} , die die Koeffizienten für die Berechnung von Real- bzw. Imaginärteilen der komplexen Zahl repräsentieren.
-    Der Algorithmus verwendet eine Schleife, um die Bits des Eingabewerts \textit{bm1pi} zu extrahieren und in einer 2D-Array-Struktur \textit{bits} zu speichern. Diese 2D-Array repräsentiert die Ziffern von \textit{bm1pi} in einer 8x16-Matrix, wobei jede Spalte ein Byte von \textit{bm1pi} speichert.
+    \subsubsection{to\_carthesian Methode (2. Variante)}
+    In dieser Variante verwenden wir eine Matrixmultiplikation, um die Konvertierung durchzuführen.
+    Die zwei vordefinierte Vektoren \textit{real\_row} und \textit{imag\_row} stellen die zeilen der Matrix dar.
+    Jeder Vektor enthält 8 Werte vom Typ \textit{int16\_t}, die die Koeffizienten für die Berechnung von Real- bzw. Imaginärteilen der komplexen Zahl repräsentieren.
+    Der Algorithmus verwendet eine Schleife, um die Bits des Eingabewerts \textit{bm1pi} zu extrahieren und in einer 2D-Array-Struktur \textit{bits} zu speichern.
+    Diese 2D-Array repräsentiert die Ziffern von \textit{bm1pi} in Form von einer 8x16-Matrix, wobei jede Spalte ein Byte von \textit{bm1pi} speichert.
+    (Siehe die mittlere Matrix in der nächsten Seite).
 
-    In der Hauptberechnungsschleife werden die Bytes in jeder Spalte der \textit{bits} Matrix verwendet, um die Matrixmultiplikation mit den Vektoren \textit{real\_row} und \textit{imag\_row} durchzuführen. Dies wird erreicht, indem die SIMD-Instruktionen \textit{\_mm\_madd\_epi16} (Multiply-Add) verwendet werden, um die Multiplikationen und Additionen in einem Schritt durchzuführen.
+    In der Hauptberechnungsschleife werden die Bytes in jeder Spalte der \textit{bits} Matrix mit den Vektoren \textit{real\_row} und \textit{imag\_row} multipliziert.
+    Dies wird durch die SIMD-Instruktionen \textit{\_mm\_madd\_epi16} (Multiply-Add) realisiert, die Multiplikationen und Additionen in einem Schritt durchzuführen.
 
-    Die Ergebnisse der Multiplikationen werden in den temporären Variablen \textit{temp\_real} und \textit{temp\_imag} gespeichert. Dann werden die Ergebnisse in horizontaler Richtung summiert, indem die SIMD-Instruktion \textit{\_mm\_hadd\_epi32} (Horizontal Add) wiederholt aufgerufen wird.
+    Die Ergebnisse der Multiplikationen werden in den temporären Variablen \textit{temp\_real} und \textit{temp\_imag} gespeichert.
+    Dann werden die Ergebnisse in horizontaler Richtung summiert, indem die SIMD-Instruktion \textit{\_mm\_hadd\_epi32} (Horizontal Add) wiederholt aufgerufen wird.
     \newpage
-    Der beschribene Algorithmus kann durch die folgenden Matrixsgleichung erklärt werden:
+    Der beschriebene Algorithmus kann durch die folgende Matrixgleichung erklärt werden:
     \[
         \newline
         \begin{pmatrix}
@@ -240,6 +270,7 @@
         \end{pmatrix}
         \times
         \begin{pmatrix}
+            2^0    \\
             2^4    \\
             2^8    \\
             2^{12} \\
@@ -254,8 +285,7 @@
             2^{48} \\
             2^{52} \\
             2^{56} \\
-            2^{60} \\
-            2^{64}
+            2^{60}
         \end{pmatrix}
         =
         \begin{pmatrix}
@@ -264,15 +294,27 @@
         \end{pmatrix}
     \]
     \newline
-    \newline
 
-    Schließlich werden die Ergebnisse aus den temporären Variablen extrahiert und in die Ausgabevariablen \textit{real} und \textit{imag} akkumuliert. Dabei werden die Werte um eine bestimmte Anzahl von Bits verschoben und addiert, um den Wert der komplexen Zahl zu aktualisieren.
+    Schließlich werden die Ergebnisse aus den temporären Variablen extrahiert und in die Ausgabe variablen \textit{real} und \textit{imag} akkumuliert.
+    Dabei werden die Zwischenwerte um eine bestimmte Anzahl von Bits (Potenzen von 16) verschoben und addiert.
 
-    Insgesamt führt der Code eine effiziente SIMD-basierte Matrixmultiplikation durch, um die Umwandlung einer speziellen komplexen Zahlendarstellung in kartesische Koordinaten durchzuführen.
+    Insgesamt führt der Code eine effiziente SIMD-basierte Matrixmultiplikation durch, um die Umwandlung einer komplexen Zahl in Basis $(-1+i)$ zu kartesische Koordinaten durchzuführen.
 
-    \subsubsection{to\_bm1pi Methode (1.Variante)}
+    \subsubsection{to\_bm1pi Methode}
+    Diese Methode ist eine möglichst optimierte Implementierung vom Algorithmus, der ausführlich im theoretischen Teil des Lösungsansatzes, erklärt wurde.
+    Die Schleife läuft maximal 128-mal durch und in jeder Iteration wird ein Bit von \textit{result} berechnet.
+    Die Iterationen werden früher aufgehört, sobald die Zwischenwerte \textit{real} und \textit{imag} beide 0 werden.
+    Dies ist der Fall, wenn die ausgegebene Zahl führenden Nullen hat.
 
-% TODO: Je nach Aufgabenstellung einen der Begriffe wählen
+    In der Schleife wird überprüft, ob beide \textit{real} und \textit{imag} gerade oder beide ungerade sind.
+    In diesem Fall ist der Rest der Division gleich 0 und damit auch das aktuelle Bit und die Werte von \textit{real} und \textit{imag} werden angepasst und durch eine Shiftoperation durch 2 geteilt.
+
+    Ansonsten sind sowohl (\textit{imag} - \textit{real}) als auch (- \textit{real} - \textit{imag}) ungerade Zahlen und der Rest der Division ist 1.
+    Deswegen tragen wir an der aktuellen Stelle in unserer \textit{result} Variable eine 1 ein, indem wir es mit der aktuelle bit Maske verodern und die Werte von \textit{real} und \textit{imag} werden angepasst und durch eine Shiftoperation durch 2 geteilt.
+
+    Nach jeder Iteration wird die Bitmaske mit 2 multipliziert damit man im nächsten Schritt, die nächste (linke) Stelle bearbeiten kann.
+
+    % DONE: Je nach Aufgabenstellung einen der Begriffe wählen
 
 
     \section{Korrektheit}
