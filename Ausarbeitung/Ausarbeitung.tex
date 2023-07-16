@@ -416,6 +416,8 @@
     In Bezug auf die Methode \textit{to\_carthesian} haben wir für die erste Variante im Hintergrund die Formel(\ref{sumFormel}) in Verwendung genommen.
     Die zweite Variante verwendet SIMD-Instruktionen, die durch gleichzeitige Berechnungen, zu einer erheblichen Beschleunigung führen. \newline
     In der Implementierung der Methode \textit{to\_bm1pi} haben wir die Zahl wiederholt durch die Basis geteilt und die Reste notiert, wie es im theoretischen Teil des Lösungsansatzes ausführlich beschrieben wurde.
+    Mit Valgrind wurde nach mögliche Memory Fehlern überprüft, was aber bei uns nicht der Fall war.
+    Anschließend haben wir mittels profiling tools das Verhalten während der Ausführung untersucht und anhand dessen Optimierungen durchgeführt.
 
 % DONE: Fuegen Sie Ihre Quellen der Datei Ausarbeitung.bib hinzu
 % Referenzieren Sie diese dann mit \cite{}.
