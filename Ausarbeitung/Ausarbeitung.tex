@@ -1,12 +1,11 @@
 % Diese Zeile bitte -nicht- aendern.
 \documentclass[course=erap]{aspdoc}
 \usepackage{enumitem}
-\usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usetikzlibrary{automata,positioning}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% TODO: Ersetzen Sie in den folgenden Zeilen die entsprechenden -Texte-
+%% DONE: Ersetzen Sie in den folgenden Zeilen die entsprechenden -Texte-
 %% mit den richtigen Werten.
 \newcommand{\theGroup}{251} % Beispiel: 42
 \newcommand{\theNumber}{A319} % Beispiel: A123
@@ -22,23 +21,27 @@
     \maketitle
 
 
-    \section{Einleitung}
+    \section{Arithmetik in Zahlensystemen mit ungewöhnlicher Basis}
 
     \subsection{Überblick}
-    Die Arithmetik ist eine fundamentale Disziplin der Mathematik, die sich mit den Grundoperationen wie Addition, Subtraktion, Multiplikation und Division befasst. Normalerweise sind wir es gewohnt, diese Operationen in unserem alltäglichen Leben in einem dezimalen Zahlensystem durchzuführen, bei dem die Basis 10 beträgt.
+    Die Arithmetik ist eine fundamentale Disziplin der Mathematik, die sich mit den Grundoperationen wie Addition, Subtraktion, Multiplikation und Division befasst.
+    Normalerweise sind wir es gewohnt, diese Operationen in unserem alltäglichen Leben in einem dezimalen Zahlensystem durchzuführen, wobei die Basis 10 beträgt.
     \newline
-    Darüber hinaus die Basen 2 und 16 sind Zahlensysteme, die in der Informatik und Mathematik häufig verwendet werden. Jedes Zahlensystem basiert auf einer bestimmten Anzahl von Symbolen, die verwendet werden, um Zahlen darzustellen. Hier ist eine Erklärung, wofür wir die Basen 2 und 16 im Allgemeinen brauchen:
+    Darüber hinaus bilden die Basen 2 und 16 Zahlensysteme, die in der Informatik und Mathematik häufig verwendet werden.
+    Jedes Zahlensystem basiert auf einer bestimmten Anzahl von Symbolen, um Zahlen darzustellen.
+    Hier eine Erklärung, wofür wir die Basen 2 und 16 im Allgemeinen brauchen:
     \newline
     \newline
     Basis 2 (Binärsystem):
-    Das Binärsystem verwendet nur zwei Symbole, normalerweise 0 und 1. Es ist das grundlegendste Zahlensystem in der digitalen Welt, da Computerinformationen auf zwei Zuständen basieren: ausgeschaltet (0) und eingeschaltet (1).
+    Das Binärsystem verwendet nur zwei Symbole, normalerweise 0 und 1.
+    Es ist das grundlegendste Zahlensystem in der digitalen Welt, da Transistoren sich auf zwei Zuständen befinden können: ausgeschaltet (0) und eingeschaltet (1).
     \newline
     \newline
     Basis 16 (Hexadezimalsystem):
-    Das Hexadezimalsystem verwendet 16 Symbole: die Zahlen 0-9 und die Buchstaben A-F. Es bietet eine kompaktere Darstellung großer Binärzahlen und erleichtert die Lesbarkeit und Handhabung von Zahlen in der Informatik.
+    Das Hexadezimalsystem verwendet 16 Symbole: die Zahlen 0-9 und die Buchstaben A-F. Es bietet eine kompaktere Darstellung großer Binärzahlen und erleichtert die Lesbarkeit und Handhabung von Zahlen.
     \newline
     \par
-    Es gibt eine allgemeine Formel,die eine Allgemiene Repräsentation von Zahlen in anderen Zahlensystemen in Dezimalschreibweise darstellt. Die Formel lautet:
+    Die g-adische Schreibweise, die eine allgemeine Repräsentation von Zahlen in anderen Zahlensystemen in arabische Zahlschrift darstellt, ist wie folgt:
 
     \begin{equation}
         \label{sumFormel}
@@ -46,33 +49,47 @@
     \end{equation}
 
 
-    In dieser Formel steht A für die resultierende Zahl im Dezimalsystem, n für die Anzahl der Stellen unserer Zahl, $g$ für die Basis und $a_i$ für die i-te Ziffer der ursprünglichen Zahl.
+    In dieser Formel steht A für die resultierende Zahl, n für die Anzahl der Stellen von A, $g$ für die Basis und $a_i$ für die i-te Ziffer der ursprünglichen Zahl.
     \newline
 
-    Um ein besseres Verständnis zu bekommen gehen wir jetzt eine Beispiel ein. wir betrachten uns die Zahl $101011$\space in Binärsystem und mit der oben gennanten Formel wollen wir diese Zahl in Dezimalsystem umwandeln:
+    Um ein besseres Verständnis zu bekommen, gehen wir jetzt ein Beispiel näher ein.
+    Betrachten wir uns die Zahl $101011$\space in Binärsystem, kann man mit der oben genannten Formel diese Zahl in Dezimalsystem umwandeln:
 
     \[1* 2^0 + 1*2^1 + 0* 2^2 + 1* 2^3 + 0* 2^4 + 1* 2^5 = 1+2+8+32 = 43 \]
-    Doch was passiert, wenn wir die Basis auf ungewöhnliche Werte setzen? Betrachten wir beispielsweise die Basis $g = -1 + i$, wobei i die komplexe Einheit ist. In diesem Fall können komplexe Zahlen mit ganzzahligen Real und Imaginärteilen dargestellt werden, selbst wenn wir die Ziffern auf die Menge \{0, 1\} beschränken. Die Basis $ -1 \pm i $ mit den Ziffern 0 und 1 wurde 1964 von S. Khmelnik und 1965 von Walter F. Penney vorgeschlagen.
+    \newpage
+    Doch was passiert, wenn wir die Basis auf ungewöhnliche Werte setzen?
+    Nimmt man beispielsweise die Basis $g = -1 + i$, wobei \textit{i} die imaginäre Einheit ist.
+    In diesem Fall können komplexe Zahlen mit ganzzahligen Real und Imaginärteilen dargestellt werden, selbst wenn man die Ziffern auf die Menge \{0, 1\} beschränkt.
+    Die Basen $ -1 \pm i $ mit den Ziffern 0 und 1 wurde 1964 von S. Khmelnik und 1965 von Walter F. Penney vorgeschlagen.
 
     In diesem Projekt werden wir uns näher mit der Arithmetik in Zahlensystemen mit einer komplexen Basis befassen.
 
     \subsection{Die Aufgabe}
 
-    Unsere Aufgabe besteht aus zwei Teilen, einem theoretischen und einem praktischen Teil.
+    Unsere Aufgabe besteht aus zwei Teilen, einem theoretischen und einem praktischen.
 
     \subsubsection{Theoretischer Teil:}
-    In diesem Teil der Ausarbeitung untersuchen wir die Konversion von komplexen Zahlen zur Basis $(-1 + i)$ und entwickeln die entsprechenden Algorithmen. Zunächst erklären wir, warum die Zahl $(3 + 2i)$ zur Basis $(-1 + i)$ die Darstellung $1001$ hat. Darauf aufbauend leiten wir die Algorithmen zur Konversion in beide Richtungen ab. Wir ziehen bei Bedarf geeignete Literaturquellen zu Rate, um unsere Argumentation zu unterstützen. Des Weiteren zeigen wir, dass komplexe Zahlen $(a + bi)$ mit den Werten $a \in \{1, 0, -1\}$ und $b \in \{1, 0, -1\}$ zur Basis $(-1 + i)$ mit binären Koeffizienten dargestellt werden können.
+    In diesem Teil der Ausarbeitung untersuchen wir die Konversion von komplexen Zahlen zur Basis $(-1 + i)$ und entwickeln die entsprechenden Algorithmen.
+    Zunächst erklären wir, warum die Zahl $(3 + 2i)$ zur Basis $(-1 + i)$ die Darstellung $1001$ hat.
+    \newline
+    Darauf aufbauend leiten wir die Algorithmen zur Konversion in beide Richtungen ab.
+    Wir ziehen bei Bedarf geeignete Literaturquellen zu Rate, um unsere Argumentation zu unterstützen.
+    Des Weiteren zeigen wir, dass komplexe Zahlen $(a + bi)$ mit den Werten $a \in \{1, 0, -1\}$ und $b \in \{1, 0, -1\}$ zur Basis $(-1 + i)$ mit binären Koeffizienten dargestellt werden können.
 
     \subsubsection{Praktischer Teil:}
-    Im praktischen Teil der Ausarbeitung implementieren wir zwei Funktionen in unserem C-Code. Die erste Funktion, \texttt{to\_carthesian}, nimmt eine vom Benutzer spezifizierte Zahl (\textit{bm1pi}) entgegen, die Bits enthält, die eine Zahl in der Darstellung zur Basis $(-1 + i)$ repräsentieren. Die Funktion wandelt diese Zahl in ihre kartesische Darstellung um und liefert den Realteil \textit{real} und den Imaginärteil \textit{imag}. Die zweite Funktion, \textit{to\_bm1pi}, erhält eine komplexe Zahl in kartesischer Darstellung mit Realteil \textit{real} und Imaginärteil \textit{imag} und gibt einen Integer zurück, dessen Bits die Ziffern der Eingabezahl zur Basis $(-1 + i)$ darstellen.
+    Im praktischen Teil implementieren wir zwei Funktionen in unserem C-Code.
+    Die erste Funktion, \textit{to\_carthesian}, nimmt eine vom Benutzer spezifizierte Zahl (\textit{bm1pi}) entgegen, die Bits enthält, die eine Zahl in der Darstellung zur Basis $(-1 + i)$ repräsentieren.
+    Die Funktion wandelt diese Zahl in ihre kartesische Darstellung um und setzt den Realteil \textit{real} und den Imaginärteil \textit{imag}.
+    \newline
+    Die zweite Funktion, \textit{to\_bm1pi}, erhält eine komplexe Zahl in kartesischer Darstellung mit Realteil \textit{real} und Imaginärteil \textit{imag} und gibt einen Integer zurück, dessen Bits die Ziffern der Eingabezahl zur Basis $(-1 + i)$ darstellen.
 
 
     \section{Lösungsansatz}
 
     \subsection{Theoretischer Teil:}
-    Generell gilt, dass wenn eine Basis und eine Zahl gegeben sind, die in dieser Basis erweitert werden soll, die Zahl wiederholt durch die Basis geteilt wird und die Reste notiert werden. In Bezug auf die Basis $-1+i$ wissen wir, dass der Rest bei der Erweiterung einer Gaußschen Zahl entweder 0 oder 1 ist.\cite{complex_base_conversion}
-    \newline
-    \newline
+    Generell gilt, wenn man eine Zahl zu einer neuen Basis umwandeln will, teilt man die Zahl wiederholt durch die neue Basis und notiert die Reste.
+    Im Fall von der Basis $-1+i$ wissen wir, dass der Rest bei der Umwandlung einer Gaußschen Zahl entweder 0 oder 1 ist.\cite{complex_base_conversion}
+    \newpage
     Nehmen wir eine Zahl $n + im$ und teilen sie durch die gewählte Basis:
 
     \[\frac{{n + im}}{{-1 + i}} = \frac{{(n + im)(-1 - i)}}{2} = \frac{{m - n}}{2} - i\frac{{n + m}}{2}\]
@@ -351,8 +368,6 @@
 
 %TODO 2.Variante to_bm1pi
 
-
-    \section{Quellenverzeichnis}
 
 % DONE: Fuegen Sie Ihre Quellen der Datei Ausarbeitung.bib hinzu
 % Referenzieren Sie diese dann mit \cite{}.
