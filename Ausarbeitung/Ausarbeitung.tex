@@ -1,7 +1,10 @@
 % Diese Zeile bitte -nicht- aendern.
 \documentclass[course=erap]{aspdoc}
 \usepackage{enumitem}
-
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{automata,positioning}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TODO: Ersetzen Sie in den folgenden Zeilen die entsprechenden -Texte-
 %% mit den richtigen Werten.
@@ -48,6 +51,8 @@ Um ein besseres Verständnis zu bekommen gehen wir jetzt eine Beispiel ein. wir 
 
 \[1* 2^0 + 1*2^1 + 0* 2^2 + 1* 2^3 + 0* 2^4 + 1* 2^5 = 1+2+8+32 = 43 \]
 Doch was passiert, wenn wir die Basis auf ungewöhnliche Werte setzen? Betrachten wir beispielsweise die Basis $g = -1 + i$, wobei i die komplexe Einheit ist. In diesem Fall können komplexe Zahlen mit ganzzahligen Real und Imaginärteilen dargestellt werden, selbst wenn wir die Ziffern auf die Menge \{0, 1\} beschränken. Die Basis $ -1 \pm i $ mit den Ziffern 0 und 1 wurde 1964 von S. Khmelnik und 1965 von Walter F. Penney vorgeschlagen.
+
+In diesem Projekt werden wir uns näher mit der Arithmetik in Zahlensystemen mit einer komplexen Basis befassen.
 
 \subsection{Die Aufgabe}
 
@@ -103,7 +108,7 @@ und der Rest ist 1. Das erste Spaltenpaar zeigt auf das Ergebnis der ersten Divi
 \centering
 \begin{tabular}{|c|c|cc|cc|c|}
 \hline
-              &               & \multicolumn{2}{c|}{\textbf{(DIVISION BY -1+i) * 2}} & \multicolumn{2}{c|}{\textbf{MODIFIED}}             &                    \\ \hline
+              &               & \multicolumn{2}{c|}{\textbf{(DIVISION BY -1+i) * 2}} & \multicolumn{2}{c|}{\textbf{MODIFIED}}             &                  \\ \hline
 \textbf{REAL} & \textbf{IMAG} & \multicolumn{1}{c|}{\textbf{REAL}}  & \textbf{IMAG}  & \multicolumn{1}{c|}{\textbf{REAL}} & \textbf{IMAG} & \textbf{REMAINDER} \\ \hline
 3             & 2             & \multicolumn{1}{c|}{-1}             & -5             & \multicolumn{1}{c|}{0}             & -4            & 1                  \\ \hline
 0             & -2            & \multicolumn{1}{c|}{-2}             & 2              & \multicolumn{1}{c|}{-2}            & 2             & 0                  \\ \hline
@@ -263,10 +268,10 @@ Hier sind einige Beispielen und Testfällen mit den erwarteten Ergebnissen(laut 
 
 \begin{enumerate}[label=\roman*)]
 \item Eingabe:$0$ \quad Ausgabe: $0+0i$ \quad Erwartet: $0+0i$
-\item Eingabe: $\smash[b]{\underbrace{111\cdots1}_{128 \text{ times}}}$ \quad \quad \space Ausgabe: $-7378697629483820646-3689348814741910323i$ \vskip \qquad \qquad \qquad  \qquad \qquad Erwartet: $-7378697629483820646-3689348814741910323
+\item Eingabe: $\smash[b]{\underbrace{111\cdots1}_{128 \text{ mal}}}$ \quad \quad \space Ausgabe: $-7378697629483820646-3689348814741910323i$ \vskip \qquad \qquad \qquad  \qquad \qquad Erwartet: $-7378697629483820646-3689348814741910323
 $
 \item Eingabe: $00011101001$ \quad Ausgabe: $-1-2i$ \quad Erwartet: $-1-2i$
-\item Eingabe: $\smash[b]{1\!\underbrace{000\cdots0}_{127 \text{ times}}}$ \quad \quad Ausgabe: 
+\item Eingabe: $\smash[b]{1\!\underbrace{000\cdots0}_{127 \text{ mal}}}$ \quad \quad Ausgabe: 
 $-9223372036854775808-9223372036854775808i$ \vskip \qquad \qquad \qquad \qquad \qquad \space Erwartet: $-9223372036854775808-9223372036854775808i
 $
 \end{enumerate}
@@ -284,6 +289,46 @@ $10001110100010000110000001100110011001100000011011100110
 $
 \end{enumerate}
 \section{Performanzanalyse}
+Beide Varianten unserer \textit{to\_carthesian} Methode bestehen jeweils aus einer Schleife, die unabhängig von der Eingabegröße eine feste Anzahl von Iterationen (16-mal) ausgeführt werden. Daher liegt die asysmptotische Laufzeitkomplexität bei \( \mathcal{O} \)(1). Auch für die Methode \textit{to\_bm1pi } verwenden beide Varianten jeweils eine Schleife, die maximal 128 Mal durchzulaufen ist, da es sich um eine 128-Bit-Eingabe handelt. Daraus folgt, dass die Worst-Case-Komplexität dieser Methoden auch unabhängig von der Eingabegröße \( \mathcal{O} \)(1) ist.
+Eine Übereinstimmung mit der tatsächlichen Laufzeit der Implementierungen wurde durch unsere Tests bestätigt.
+\vspace{10pt} \newline
+Getestet wurde auf einem System mit einem Intel i9-13900H Prozessor, 5.40GHz bei P-Cores und 4.10GHz bei E-Cores, 32 GB Arbeitsspeicher, Ubuntu 23.04, 64 Bit, Linux-Kernel 6.2.0-25-generic. Kompiliert wurde mit GCC 12.2.0 mit der Option -O3 -msse4.1.
+Die Berechnungen wurden für die Methode \textit{to\_carthesian} mit der größtmögliche Eingabezahl,deren 128 Bits alle mit 1 gesetzt sind, mit verschiedenen Wiederholungen jeweils 15 mal durchgeführt und das arithmetische Mittel für jede Eingabegröße wurde in folgendes Diagram eingetragen:
+\vspace{10pt}
+
+\begin{center}
+\begin{tikzpicture}
+
+    \begin{axis}[clip = false, xmin=0, xmax=110000000, ymin=0, ymax=13, xlabel=$Iterations\cdot10^7$, ylabel= Time in sec, axis lines=left, ymajorgrids = true, xmajorgrids = true,
+    grid style= dashed,
+    xticklabels={0,0,2,4,6,8,10},
+    scaled x ticks=false,
+    title={Laufzeitanalyse für to\_carthesian Methode}
+    ]
+        \addplot+[color = blue]table[x=Iter,y=carthesian_v0_sec]{test.txt}
+        node[right, pos=1]{to\_carthesian};
+        \addplot+[color=red]table[x=Iter,y=carthesian_v1_sec]{test.txt}node[right, pos=1]{to\_carthesian\_V1};
+    \end{axis}
+    
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}
+
+    \begin{axis}[clip = false, xmin=0, xmax=110000000, ymin=0, ymax=23, xlabel=$Iterations\cdot10^7$, ylabel= Time in sec, axis lines=left, ymajorgrids = true, xmajorgrids = true,
+    grid style= dashed,
+    xticklabels={0,0,2,4,6,8,10},
+    scaled x ticks=false,
+    title={Laufzeitanalyse für to\_bm1pi Methode}
+    ]
+        \addplot+[color = blue]table[x=Iter,y=bm1pi_sec]{test.txt}
+        node[right, pos=1]{to\_bm1pi};
+        %\addplot+[color=red]table[x=Iter,y=carthesian_v1_sec]{test.txt}node[right, pos=1]{to\_carthesian\_V1};
+    \end{axis}
+    
+\end{tikzpicture}
+\end{center}
 
 \section{Zusammenfassung und Ausblick}
 Die vorliegende Arbeit befasst sich mit der Konversion von komplexen Zahlen zur Basis $(-1 + i)$. Im theoretischen Teil wurden die Algorithmen zur Konversion sowohl in die eine als auch in die andere Richtung ausführlich beschrieben. \newline
@@ -297,7 +342,7 @@ In der ersten Variante der Methode \textit{to\_bm1pi} haben wir die Zahl wiederh
 
 \section{Quellenverzeichnis}
 
-% TODO: Fuegen Sie Ihre Quellen der Datei Ausarbeitung.bib hinzu
+% DONE: Fuegen Sie Ihre Quellen der Datei Ausarbeitung.bib hinzu
 % Referenzieren Sie diese dann mit \cite{}.
 % Beispiel: CR2 ist ein Register der x86-Architektur~\cite{intel2017man}.
 
