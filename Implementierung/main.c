@@ -59,13 +59,6 @@ void malloc_failed() {
     exit(EXIT_FAILURE);
 }
 
-// TODO: implement tests
-unsigned tests(size_t repetitions) {
-    unsigned failed = 0;
-
-    return failed;
-}
-
 // DONE: implementation of different modes and according parameters, and also help
 int main(int argc, char **argv) {
 
